@@ -214,6 +214,7 @@ namespace Otaku_Time
             tryCount = 0;
             string retval = val.GetAttribute("href");
             clicked = false;
+            PhantomObject.Navigate().GoToUrl(AnimeURL);
             return retval;
 
         }
