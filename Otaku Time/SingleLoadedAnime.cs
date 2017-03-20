@@ -191,10 +191,18 @@ namespace Otaku_Time
             var firstpreval = PhantomObject.FindElementsByTagName("a");
             var secondspreval = firstpreval.Where(x => x.Text != "").Select(x => x).ToList();
             var val = secondspreval.Where(x => x.Text.Contains("mp4")).FirstOrDefault();
-            string openloadurl = PhantomObject.FindElementById("mVideo").GetAttribute("src");
+            string openloadurl = "";
+            try
+            {
+                openloadurl = PhantomObject.FindElementById("mVideo").GetAttribute("src");
+            }
+            catch (Exception) { }
             if (!string.IsNullOrWhiteSpace(openloadurl))
             {
-                return GetOpenloadLink(openloadurl);
+                string value = GetOpenloadLink(openloadurl);
+                PhantomObject.Navigate().GoToUrl(AnimeURL);
+                clicked = false;
+                return value;
             }
             if (val == null)
             {
@@ -214,7 +222,6 @@ namespace Otaku_Time
             tryCount = 0;
             string retval = val.GetAttribute("href");
             clicked = false;
-            PhantomObject.Navigate().GoToUrl(AnimeURL);
             return retval;
 
         }
