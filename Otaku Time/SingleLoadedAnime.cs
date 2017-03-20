@@ -54,7 +54,7 @@ namespace Otaku_Time
             SeriesDocument.LoadHtml(PhantomObject.PageSource);
             if (NeedSynopsis)
             {
-                AnimeSynopsis.Text = PhantomObject.FindElementsByTagName("p").Last().Text;
+                AnimeSynopsis.Text = PhantomObject.FindElementsByTagName("span").Last().Text;
                 loadCleanSynopsis();
             }
             var myTable = PhantomObject.FindElementsByClassName("episode");
@@ -199,7 +199,9 @@ namespace Otaku_Time
             catch (Exception) { }
             if (!string.IsNullOrWhiteSpace(openloadurl))
             {
-                string value = GetOpenloadLink(openloadurl);
+                string value = "";
+                if (openloadurl.Contains("openload")) value = GetOpenloadLink(openloadurl);
+                else value = openloadurl; // its the google link. weird.
                 PhantomObject.Navigate().GoToUrl(AnimeURL);
                 clicked = false;
                 return value;

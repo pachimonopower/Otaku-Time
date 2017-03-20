@@ -39,6 +39,7 @@ namespace Otaku_Time
                 {
                     wc.Dispose();
                     this.Dispose();
+                    return;
                 }
                 wc.DownloadFileAsync(new Uri(URL), fileName);
                 wc.DownloadProgressChanged += Wc_DownloadProgressChanged;

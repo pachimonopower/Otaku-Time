@@ -37,7 +37,6 @@
             this.ClientSize = new System.Drawing.Size(789, 377);
             this.Name = "PlayVideo";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Vid";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayVideo_FormClosing);
