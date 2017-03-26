@@ -16,6 +16,7 @@ namespace Otaku_Time
         private static DownloadingEpisodes MyObject;
 
         public int CurrentlyDownloading = 0;
+        public int MaxDownloading = 0;
 
         private DownloadingEpisodes()
         {
@@ -42,7 +43,7 @@ namespace Otaku_Time
         public void addDownload(string URL, string episodeName, string path)
         {
             EpisodeDownloadObject EDO = new EpisodeDownloadObject(URL, path, episodeName);
-            if(CurrentlyDownloading != 5)
+            if(MaxDownloading != 0 && CurrentlyDownloading != MaxDownloading)
             {
                 if(this.Visible == false)
                 {

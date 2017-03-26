@@ -288,7 +288,7 @@ namespace Otaku_Time
             Dictionary<string, string> Vals = new Dictionary<string, string>();
             if (AnimeEpisodeList.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)(() => {AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString()));  CloseBox.Enabled = false; }));
+                this.Invoke((MethodInvoker)(() => { AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             }
             else
             {
@@ -313,21 +313,26 @@ namespace Otaku_Time
                     this.Invoke((MethodInvoker)(() => DE.addDownload(redirectorLink, episodeName, directoryPath)));
                 }
             }
-            if (AnimeEpisodeList.InvokeRequired)
+            if (this.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)(() => CloseBox.Enabled = true));
-            }
+                this.Invoke((MethodInvoker)(() =>
+                {
+                    CloseBox.Enabled = true;
+                    InfoFrm.Close();
+                }));
+        }
             else
             {
                 CloseBox.Enabled = true;
+                InfoFrm.Close();
             }
-        }
+}
 
-        private string GetSafeFilename(string filename)
-        {
+private string GetSafeFilename(string filename)
+{
 
-            return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
+    return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
 
-        }
+}
     }
 }
