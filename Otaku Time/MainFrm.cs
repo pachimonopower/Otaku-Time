@@ -56,6 +56,7 @@ namespace Otaku_Time
                 this.FormClosed += MainFrm_FormClosed;
 
             }
+            VersionTxt.Text += Application.ProductVersion;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -271,11 +272,11 @@ namespace Otaku_Time
 
         private void buildLayout(List<AnimePane> AnimeList)
         {
-            flowLayoutPanel1.SuspendLayout();
-            if (flowLayoutPanel1.InvokeRequired)
-                flowLayoutPanel1.Invoke((MethodInvoker)(() => flowLayoutPanel1.Controls.Clear()));
+            MainFrmPanel.SuspendLayout();
+            if (MainFrmPanel.InvokeRequired)
+                MainFrmPanel.Invoke((MethodInvoker)(() => MainFrmPanel.Controls.Clear()));
             else
-                flowLayoutPanel1.Controls.Clear();
+                MainFrmPanel.Controls.Clear();
             List<Control> ALIst = new List<Control> { };
             foreach (AnimePane SinglePane in AnimeList)
             {
@@ -286,11 +287,11 @@ namespace Otaku_Time
                 AC.AnimeSynposis = SinglePane.AnimeSeriesSynopsis;
                 ALIst.Add(AC);
             }
-            if (flowLayoutPanel1.InvokeRequired)
-                flowLayoutPanel1.Invoke((MethodInvoker)(() => flowLayoutPanel1.Controls.AddRange(ALIst.ToArray())));
+            if (MainFrmPanel.InvokeRequired)
+                MainFrmPanel.Invoke((MethodInvoker)(() => MainFrmPanel.Controls.AddRange(ALIst.ToArray())));
             else
-                flowLayoutPanel1.Controls.AddRange(ALIst.ToArray());
-            flowLayoutPanel1.ResumeLayout();
+                MainFrmPanel.Controls.AddRange(ALIst.ToArray());
+            MainFrmPanel.ResumeLayout();
         }
 
         private void searchAnime(object sender, KeyEventArgs e)
@@ -330,7 +331,7 @@ namespace Otaku_Time
             LoadedAnime.AnimeImage.ImageLocation = AnimeThumbnailURL;
             LoadedAnime.AnimeURL = "https://kissanime.to" + AnimeSeriesURL;
             LoadedAnime.loadAnimeList(AnimeSeriesURL, true);
-            flowLayoutPanel1.SendToBack();
+            MainFrmPanel.SendToBack();
         }
 
         private void optionStrip_Resize(object sender, EventArgs e)
@@ -371,7 +372,7 @@ namespace Otaku_Time
 
         private void GoHome_Click(object sender, EventArgs e)
         {
-            flowLayoutPanel1.BringToFront();
+            MainFrmPanel.BringToFront();
         }
     }
 }

@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.optionStrip = new System.Windows.Forms.ToolStrip();
-            this.ProgramText = new System.Windows.Forms.ToolStripLabel();
             this.CloseFrm = new System.Windows.Forms.ToolStripButton();
             this.MaximizeFrm = new System.Windows.Forms.ToolStripButton();
             this.MinimizeFrm = new System.Windows.Forms.ToolStripButton();
@@ -40,14 +39,16 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ShowDownloads = new System.Windows.Forms.ToolStripButton();
             this.GoHome = new System.Windows.Forms.ToolStripButton();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.MainFrmPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.LoadAnimeWorker = new System.ComponentModel.BackgroundWorker();
             this.AboutInfo = new System.Windows.Forms.Panel();
+            this.VersionTxt = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.LoadedAnime = new Otaku_Time.SingleLoadedAnime();
+            this.ProgramText = new System.Windows.Forms.ToolStripLabel();
             this.optionStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.AboutInfo.SuspendLayout();
@@ -71,17 +72,6 @@
             this.optionStrip.TabIndex = 0;
             this.optionStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             this.optionStrip.Resize += new System.EventHandler(this.optionStrip_Resize);
-            // 
-            // ProgramText
-            // 
-            this.ProgramText.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.ProgramText.ForeColor = System.Drawing.Color.White;
-            this.ProgramText.Margin = new System.Windows.Forms.Padding(487, 1, 0, 2);
-            this.ProgramText.Name = "ProgramText";
-            this.ProgramText.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ProgramText.Size = new System.Drawing.Size(106, 28);
-            this.ProgramText.Text = "Otaku Time";
-            this.ProgramText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             // 
             // CloseFrm
             // 
@@ -217,16 +207,17 @@
             this.GoHome.ToolTipText = "Home";
             this.GoHome.Click += new System.EventHandler(this.GoHome_Click);
             // 
-            // flowLayoutPanel1
+            // MainFrmPanel
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 62);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(974, 433);
-            this.flowLayoutPanel1.TabIndex = 2;
+            this.MainFrmPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MainFrmPanel.AutoScroll = true;
+            this.MainFrmPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.MainFrmPanel.Location = new System.Drawing.Point(0, 62);
+            this.MainFrmPanel.Name = "MainFrmPanel";
+            this.MainFrmPanel.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.MainFrmPanel.Size = new System.Drawing.Size(974, 433);
+            this.MainFrmPanel.TabIndex = 2;
             // 
             // LoadAnimeWorker
             // 
@@ -237,16 +228,32 @@
             // 
             // AboutInfo
             // 
+            this.AboutInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AboutInfo.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.AboutInfo.Controls.Add(this.VersionTxt);
             this.AboutInfo.Controls.Add(this.textBox1);
             this.AboutInfo.Controls.Add(this.label1);
             this.AboutInfo.Controls.Add(this.pictureBox2);
             this.AboutInfo.Controls.Add(this.pictureBox1);
-            this.AboutInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AboutInfo.Location = new System.Drawing.Point(0, 0);
+            this.AboutInfo.Location = new System.Drawing.Point(0, 62);
             this.AboutInfo.Name = "AboutInfo";
-            this.AboutInfo.Size = new System.Drawing.Size(974, 495);
+            this.AboutInfo.Size = new System.Drawing.Size(974, 433);
             this.AboutInfo.TabIndex = 4;
+            // 
+            // VersionTxt
+            // 
+            this.VersionTxt.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.VersionTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.VersionTxt.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VersionTxt.ForeColor = System.Drawing.Color.White;
+            this.VersionTxt.Location = new System.Drawing.Point(288, 396);
+            this.VersionTxt.Name = "VersionTxt";
+            this.VersionTxt.ReadOnly = true;
+            this.VersionTxt.Size = new System.Drawing.Size(390, 25);
+            this.VersionTxt.TabIndex = 4;
+            this.VersionTxt.Text = "You\'re using Otaku Time Version: ";
+            this.VersionTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox1
             // 
@@ -257,7 +264,8 @@
             this.textBox1.Location = new System.Drawing.Point(288, 107);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(398, 316);
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(398, 158);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -295,13 +303,28 @@
             // 
             // LoadedAnime
             // 
+            this.LoadedAnime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadedAnime.AutoSize = true;
             this.LoadedAnime.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.LoadedAnime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoadedAnime.Location = new System.Drawing.Point(0, 0);
+            this.LoadedAnime.Location = new System.Drawing.Point(0, 62);
             this.LoadedAnime.Name = "LoadedAnime";
-            this.LoadedAnime.Size = new System.Drawing.Size(974, 495);
+            this.LoadedAnime.Size = new System.Drawing.Size(974, 433);
             this.LoadedAnime.TabIndex = 4;
+            // 
+            // ProgramText
+            // 
+            this.ProgramText.AutoSize = false;
+            this.ProgramText.AutoToolTip = true;
+            this.ProgramText.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ProgramText.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.ProgramText.ForeColor = System.Drawing.Color.White;
+            this.ProgramText.Margin = new System.Windows.Forms.Padding(460, 0, 0, 0);
+            this.ProgramText.Name = "ProgramText";
+            this.ProgramText.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.ProgramText.Size = new System.Drawing.Size(106, 31);
+            this.ProgramText.Text = "Otaku Time";
+            this.ProgramText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             // 
             // MainFrm
             // 
@@ -309,9 +332,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(974, 495);
-            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.MenuStrip);
             this.Controls.Add(this.optionStrip);
+            this.Controls.Add(this.MainFrmPanel);
             this.Controls.Add(this.LoadedAnime);
             this.Controls.Add(this.AboutInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -339,7 +362,6 @@
         private System.Windows.Forms.ToolStrip optionStrip;
         private System.Windows.Forms.ToolStrip MenuStrip;
         private System.Windows.Forms.ToolStripButton MinimizeFrm;
-        private System.Windows.Forms.ToolStripLabel ProgramText;
         private System.Windows.Forms.ToolStripButton CloseFrm;
         private System.Windows.Forms.ToolStripButton MaximizeFrm;
         private System.Windows.Forms.ToolStripTextBox AnimeSearchQuery;
@@ -352,9 +374,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ToolStripButton GoHome;
-        public System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        public System.Windows.Forms.FlowLayoutPanel MainFrmPanel;
         private SingleLoadedAnime LoadedAnime;
         private System.Windows.Forms.Panel AboutInfo;
+        private System.Windows.Forms.TextBox VersionTxt;
+        private System.Windows.Forms.ToolStripLabel ProgramText;
     }
 }
 

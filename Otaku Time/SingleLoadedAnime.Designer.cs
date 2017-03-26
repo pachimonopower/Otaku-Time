@@ -35,8 +35,8 @@
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
             this.AnimeEpisodeList = new System.Windows.Forms.ListView();
             this.EpisodeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.DownloadBtn = new System.Windows.Forms.Button();
+            this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
             this.DownloadWorker = new System.ComponentModel.BackgroundWorker();
             this.groupBox1.SuspendLayout();
@@ -104,8 +104,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AnimeEpisodes.Controls.Add(this.AnimeEpisodeList);
-            this.AnimeEpisodes.Controls.Add(this.button2);
-            this.AnimeEpisodes.Controls.Add(this.button1);
+            this.AnimeEpisodes.Controls.Add(this.DownloadBtn);
+            this.AnimeEpisodes.Controls.Add(this.WatchNowBtn);
             this.AnimeEpisodes.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AnimeEpisodes.ForeColor = System.Drawing.Color.White;
             this.AnimeEpisodes.Location = new System.Drawing.Point(693, 32);
@@ -136,31 +136,32 @@
             // EpisodeColumnHeader
             // 
             this.EpisodeColumnHeader.Text = "Episodes";
+            this.EpisodeColumnHeader.Width = 251;
             // 
-            // button2
+            // DownloadBtn
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(141, 331);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(126, 37);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Download";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.DownloadBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.DownloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DownloadBtn.Location = new System.Drawing.Point(141, 331);
+            this.DownloadBtn.Name = "DownloadBtn";
+            this.DownloadBtn.Size = new System.Drawing.Size(126, 37);
+            this.DownloadBtn.TabIndex = 1;
+            this.DownloadBtn.Text = "Download";
+            this.DownloadBtn.UseVisualStyleBackColor = true;
+            this.DownloadBtn.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // WatchNowBtn
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.WatchNowBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(6, 331);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 37);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Watch Now";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.WatchNowBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WatchNowBtn.Location = new System.Drawing.Point(6, 331);
+            this.WatchNowBtn.Name = "WatchNowBtn";
+            this.WatchNowBtn.Size = new System.Drawing.Size(126, 37);
+            this.WatchNowBtn.TabIndex = 0;
+            this.WatchNowBtn.Text = "Watch Now";
+            this.WatchNowBtn.UseVisualStyleBackColor = true;
+            this.WatchNowBtn.Click += new System.EventHandler(this.button1_Click);
             // 
             // CloseBox
             // 
@@ -202,8 +203,8 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox AnimeEpisodes;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button DownloadBtn;
+        private System.Windows.Forms.Button WatchNowBtn;
         public System.Windows.Forms.TextBox AnimeSynopsis;
         public System.Windows.Forms.PictureBox AnimeImage;
         public System.Windows.Forms.Label AnimeName;

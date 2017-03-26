@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -122,6 +122,12 @@
     <Compile Include="EpisodeDownloadObject.Designer.cs">
       <DependentUpon>EpisodeDownloadObject.cs</DependentUpon>
     </Compile>
+    <Compile Include="InfoFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoFrm.Designer.cs">
+      <DependentUpon>InfoFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EpisodeDownloadObject.resx">
       <DependentUpon>EpisodeDownloadObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoFrm.resx">
+      <DependentUpon>InfoFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.cs</DependentUpon>
@@ -252,7 +261,7 @@
     <Folder Include="bin\Release\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="phantomjs.exe">
+    <Content Include="PhantomJS.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="unnamed.ico" />

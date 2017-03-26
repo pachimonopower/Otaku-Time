@@ -27,6 +27,8 @@ namespace Otaku_Time
         private string path = "";
         public static string response = "";
 
+        private InfoFrm InfoFrm;
+
         public SingleLoadedAnime()
         {
 
@@ -104,7 +106,7 @@ namespace Otaku_Time
             AnimeURL = "";
             AnimeSynopsis.Text = "";
             this.SendToBack();
-            ((MainFrm)Parent).flowLayoutPanel1.BringToFront();
+            ((MainFrm)Parent).MainFrmPanel.BringToFront();
         }
 
         public void closeMe()
@@ -231,8 +233,21 @@ namespace Otaku_Time
         private string GetOpenloadLink(string openloadurl)
         {
             string retval = "";
-            PhantomObject.Navigate().GoToUrl(openloadurl.Replace("embed", "f"));
-            PhantomObject.FindElementById("btnDl").Click();
+            openloadurl = openloadurl.Replace("embed", "f");
+            PhantomObject.Navigate().GoToUrl(openloadurl);
+            if (PhantomObject.Title.Contains("404"))
+            {
+                Thread.Sleep(100);
+                PhantomObject.Navigate().GoToUrl(openloadurl); // the 404 is an openload bug it seems.
+            }
+            try
+            {
+                PhantomObject.FindElementById("btnDl").Click();
+            }
+            catch (Exception)
+            {
+                return "no";
+            }
             Thread.Sleep(6000);
             PhantomObject.FindElementById("downloadTimer").Click();
             var possibles = PhantomObject.FindElementsByClassName("dlbutton").Where(x => x.GetAttribute("href") != null).FirstOrDefault();
@@ -261,27 +276,51 @@ namespace Otaku_Time
             }
             path = FBD.SelectedPath;
             UseWaitCursor = true;
+            InfoFrm = new InfoFrm();
+            InfoFrm.Show();
+            InfoFrm.BringToFront();
             DownloadWorker.RunWorkerAsync();
             UseWaitCursor = false;
         }
 
         private void DownloadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            AnimeEpisodeList.Invoke((MethodInvoker)(() =>
+            Dictionary<string, string> Vals = new Dictionary<string, string>();
+            if (AnimeEpisodeList.InvokeRequired)
             {
-                foreach (ListViewItem selectedItem in AnimeEpisodeList.SelectedItems)
+                this.Invoke((MethodInvoker)(() => {AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString()));  CloseBox.Enabled = false; }));
+            }
+            else
+            {
+                AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString()));
+                CloseBox.Enabled = false;
+            }
+            foreach (KeyValuePair<string, string> value in Vals)
+            {
+                string episodeName = GetSafeFilename(value.Key);
+                InfoFrm.Invoke((MethodInvoker)(() =>
                 {
-                    string episodeName = GetSafeFilename(selectedItem.Text);
-                    string episodeURL = selectedItem.Tag.ToString();
-                    string directoryPath = path + @"\" + GetSafeFilename(AnimeName.Text);
-                    Directory.CreateDirectory(directoryPath);
+                    InfoFrm.textBox1.Text = "Downloading: " + episodeName;
+                    InfoFrm.textBox1.Refresh();
+                }));
+                string episodeURL = value.Value;
+                string directoryPath = path + @"\" + GetSafeFilename(AnimeName.Text);
+                Directory.CreateDirectory(directoryPath);
 
-                    string redirectorLink = GetGoogleLink(episodeURL).Replace("&amp;", "&"); ;
-
-                    DE.addDownload(redirectorLink, episodeName, directoryPath);
+                string redirectorLink = GetGoogleLink(episodeURL).Replace("&amp;", "&");
+                if (redirectorLink != "no")
+                {
+                    this.Invoke((MethodInvoker)(() => DE.addDownload(redirectorLink, episodeName, directoryPath)));
                 }
-            }));
-
+            }
+            if (AnimeEpisodeList.InvokeRequired)
+            {
+                this.Invoke((MethodInvoker)(() => CloseBox.Enabled = true));
+            }
+            else
+            {
+                CloseBox.Enabled = true;
+            }
         }
 
         private string GetSafeFilename(string filename)
