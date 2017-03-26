@@ -74,6 +74,7 @@ namespace Otaku_Time
             {
 
             }
+            this.Dispose();
             
         }
     }

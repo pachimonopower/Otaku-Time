@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.optionStrip = new System.Windows.Forms.ToolStrip();
+            this.ProgramText = new System.Windows.Forms.ToolStripLabel();
             this.CloseFrm = new System.Windows.Forms.ToolStripButton();
             this.MaximizeFrm = new System.Windows.Forms.ToolStripButton();
             this.MinimizeFrm = new System.Windows.Forms.ToolStripButton();
@@ -48,7 +49,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.LoadedAnime = new Otaku_Time.SingleLoadedAnime();
-            this.ProgramText = new System.Windows.Forms.ToolStripLabel();
             this.optionStrip.SuspendLayout();
             this.MenuStrip.SuspendLayout();
             this.AboutInfo.SuspendLayout();
@@ -72,6 +72,20 @@
             this.optionStrip.TabIndex = 0;
             this.optionStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             this.optionStrip.Resize += new System.EventHandler(this.optionStrip_Resize);
+            // 
+            // ProgramText
+            // 
+            this.ProgramText.AutoSize = false;
+            this.ProgramText.AutoToolTip = true;
+            this.ProgramText.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.ProgramText.Font = new System.Drawing.Font("Tahoma", 14F);
+            this.ProgramText.ForeColor = System.Drawing.Color.White;
+            this.ProgramText.Margin = new System.Windows.Forms.Padding(460, 0, 0, 0);
+            this.ProgramText.Name = "ProgramText";
+            this.ProgramText.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.ProgramText.Size = new System.Drawing.Size(106, 31);
+            this.ProgramText.Text = "Otaku Time";
+            this.ProgramText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             // 
             // CloseFrm
             // 
@@ -312,20 +326,6 @@
             this.LoadedAnime.Size = new System.Drawing.Size(974, 433);
             this.LoadedAnime.TabIndex = 4;
             // 
-            // ProgramText
-            // 
-            this.ProgramText.AutoSize = false;
-            this.ProgramText.AutoToolTip = true;
-            this.ProgramText.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ProgramText.Font = new System.Drawing.Font("Tahoma", 14F);
-            this.ProgramText.ForeColor = System.Drawing.Color.White;
-            this.ProgramText.Margin = new System.Windows.Forms.Padding(460, 0, 0, 0);
-            this.ProgramText.Name = "ProgramText";
-            this.ProgramText.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.ProgramText.Size = new System.Drawing.Size(106, 31);
-            this.ProgramText.Text = "Otaku Time";
-            this.ProgramText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
-            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -343,6 +343,7 @@
             this.Name = "MainFrm";
             this.ShowIcon = false;
             this.Text = "Otaku Time";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
             this.Load += new System.EventHandler(this.MainFrm_Load);
             this.optionStrip.ResumeLayout(false);
             this.optionStrip.PerformLayout();

@@ -53,23 +53,8 @@ namespace Otaku_Time
                 DE = DownloadingEpisodes.GetMe();
                 DE.Hide();
 
-                this.FormClosed += MainFrm_FormClosed;
-
             }
             VersionTxt.Text += Application.ProductVersion;
-        }
-
-        private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (DE.DownloadCount > 0)
-            {
-                if (MessageBox.Show("You are currently downloading, are you sure you wish you close down Otaku Time?", "Otaku Time", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
-            PhantomObject.Dispose();
-            Application.Exit();
         }
         private void MainFrm_Load(object sender, EventArgs e)
         {
@@ -373,6 +358,20 @@ namespace Otaku_Time
         private void GoHome_Click(object sender, EventArgs e)
         {
             MainFrmPanel.BringToFront();
+        }
+
+        private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DE.DownloadCount > 0)
+            {
+                if (MessageBox.Show("You are currently downloading, are you sure you wish you close down Otaku Time?", "Otaku Time", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            PhantomObject.Dispose();
+            Application.Exit();
         }
     }
 }
