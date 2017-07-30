@@ -41,7 +41,6 @@
             this.ShowDownloads = new System.Windows.Forms.ToolStripButton();
             this.GoHome = new System.Windows.Forms.ToolStripButton();
             this.MainFrmPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.LoadAnimeWorker = new System.ComponentModel.BackgroundWorker();
             this.AboutInfo = new System.Windows.Forms.Panel();
             this.VersionTxt = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -233,13 +232,6 @@
             this.MainFrmPanel.Size = new System.Drawing.Size(974, 433);
             this.MainFrmPanel.TabIndex = 2;
             // 
-            // LoadAnimeWorker
-            // 
-            this.LoadAnimeWorker.WorkerReportsProgress = true;
-            this.LoadAnimeWorker.WorkerSupportsCancellation = true;
-            this.LoadAnimeWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LoadAnimeWorker_DoWork);
-            this.LoadAnimeWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.LoadAnimeWorker_RunWorkerCompleted);
-            // 
             // AboutInfo
             // 
             this.AboutInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -344,7 +336,6 @@
             this.ShowIcon = false;
             this.Text = "Otaku Time";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
-            this.Load += new System.EventHandler(this.MainFrm_Load);
             this.optionStrip.ResumeLayout(false);
             this.optionStrip.PerformLayout();
             this.MenuStrip.ResumeLayout(false);
@@ -369,7 +360,6 @@
         private System.Windows.Forms.ToolStripButton InfoBtrn;
         private System.Windows.Forms.ToolStripButton ShowDownloads;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.ComponentModel.BackgroundWorker LoadAnimeWorker;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;

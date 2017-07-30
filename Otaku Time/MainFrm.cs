@@ -16,6 +16,7 @@ using HtmlAgilityPack;
 using System.Net;
 using System.Xml;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Otaku_Time
 {
@@ -24,9 +25,7 @@ namespace Otaku_Time
     {
         public PhantomJSDriver PhantomObject;
         private int counter = 0;
-        private SplashFrm splash;
         public DownloadingEpisodes DE;
-        private List<AnimePane> animeBuilder;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -44,29 +43,29 @@ namespace Otaku_Time
             }
 
             InitializeComponent();
-
+            optionStrip.Renderer = new RemStripBar();
             if (this.DesignMode == false)
             {
-                PhantomObject = PhantomFactory.ReturnDriver();
-                splash = new SplashFrm();
-                new Thread(() => splash.ShowDialog()).Start();
+                PhantomObject = Statics.PhantomObject();
                 DE = DownloadingEpisodes.GetMe();
                 DE.Hide();
-
             }
             VersionTxt.Text += Application.ProductVersion;
+            GoThroughDecorate(this);
+            ProgramText.BackColor = Statics.GetColor();
+            LoadedAnime.AnimeSynopsis.BackColor = Statics.GetColor();
         }
-        private void MainFrm_Load(object sender, EventArgs e)
+
+        private void GoThroughDecorate(Control C)
         {
-
-            if (this.DesignMode == false)
+            if (C.BackColor == SystemColors.MenuHighlight)
             {
-                PhantomObject.Navigate().GoToUrl("http://kissanime.to/M");
-                optionStrip.Renderer = new RemStripBar();
-                this.Hide();
-                getAuth();
+                Statics.DecorateControl(C);
             }
-
+            foreach (Control Cont in C.Controls)
+            {
+                GoThroughDecorate(Cont);
+            }
         }
         private void MoveThisform(object sender, MouseEventArgs e)
         {
@@ -97,53 +96,12 @@ namespace Otaku_Time
             this.WindowState = FormWindowState.Minimized;
         }
         #endregion
-        private void getAuth()
-        {
-            if (PhantomObject.Title.Contains("Please wait 5 seconds"))
-            {
-                if (splash.WhatDoing.InvokeRequired)
-                    splash.WhatDoing.Invoke((MethodInvoker)(() => splash.WhatDoing.Text = "Gaining authentication from server."));
-                else
-                    splash.WhatDoing.Text = "Gaining authentication from server.";
-                if (counter != 4)
-                {
-                    if (splash.Progress.InvokeRequired)
-                        splash.WhatDoing.Invoke((MethodInvoker)(() => splash.Progress.PerformStep()));
-                    else
-                        splash.Progress.PerformStep();
-                    counter++;
-                }
-                System.Threading.Thread.Sleep(2000);
-                getAuth();
-            }
-            else
-            {
-                if (splash.WhatDoing.InvokeRequired)
-                    splash.WhatDoing.Invoke((MethodInvoker)(() => splash.WhatDoing.Text = "Filling program with anime!"));
-                else
-                    splash.WhatDoing.Text = "Filling program with anime!";
-                if (splash.Progress.InvokeRequired)
-                    splash.WhatDoing.Invoke((MethodInvoker)(() => splash.Progress.PerformStep()));
-                else
-                    splash.Progress.PerformStep();
-                buildLayout(MainMobileUpdates());
-                if (splash.Progress.InvokeRequired)
-                    splash.WhatDoing.Invoke((MethodInvoker)(() => splash.Progress.PerformStep()));
-                else
-                    splash.Progress.PerformStep();
-                if (splash.InvokeRequired)
-                    splash.Invoke((MethodInvoker)(() => splash.Dispose()));
-                else
-                    splash.Dispose();
-                this.Show();
-            }
-        }
         private List<AnimePane> MainMobileUpdates()
         {
             List<AnimePane> Animes = new List<AnimePane>();
 
             if (PhantomObject.Title.Contains("KissAnime Mobile") == false)
-                PhantomObject.Navigate().GoToUrl("http://kissanime.to/m");
+                PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/m");
             foreach (var x in PhantomObject.FindElementsByTagName("article"))
             {
                 string ImageLocation = x.FindElement(By.TagName("img")).GetAttribute("src");
@@ -158,64 +116,11 @@ namespace Otaku_Time
             return Animes;
         }
 
-        private List<AnimePane> loadAnime(string SearchQuery, int limit, bool UseMobile = false)
-        {
-            if (UseMobile)
-                return loadAnimeViaMobile(SearchQuery, limit);
-            PhantomObject.Navigate().GoToUrl("http://kissanime.to/AdvanceSearch");
-            do
-            {
-                PhantomObject.Navigate().Refresh();
-                Thread.Sleep(2000);
-            }
-            while (PhantomObject.PageSource.Contains("The service is unavailable."));
-            PhantomObject.FindElementById("animeName").SendKeys(SearchQuery);
-            PhantomObject.FindElementById("btnSubmit").Click();
-
-            List<AnimePane> correctNodes = new List<AnimePane> { };
-            string PageSource = PhantomObject.PageSource;
-            HtmlAgilityPack.HtmlDocument SeriesDocument = new HtmlAgilityPack.HtmlDocument();
-            SeriesDocument.LoadHtml(PageSource);
-            var collection = SeriesDocument.DocumentNode.Descendants("tr");
-            int counter = 0;
-            foreach (HtmlNode node in collection)
-            {
-                if (counter == limit)
-                {
-                    counter = 0;
-                    break;
-                }
-                try
-                {
-                    HtmlNode realParent = node.SelectSingleNode("td");
-                    if (realParent == null)
-                    {
-                        continue;
-                    }
-                    AnimePane AnimeCriteria = new AnimePane();
-                    AnimeCriteria.AnimeSeriesURL = realParent.SelectSingleNode("a").GetAttributeValue("href", "N/A");
-                    AnimeCriteria.AnimeName = realParent.SelectSingleNode("a").InnerHtml;
-                    AnimeCriteria.AnimeName = AnimeCriteria.AnimeName.Replace(@"\r\n", "").Trim();
-                    string[] animeInfo = getAnimeInfo(AnimeCriteria.AnimeName);
-                    AnimeCriteria.AnimeThumbnailURL = animeInfo[0];
-                    AnimeCriteria.AnimeSeriesSynopsis = animeInfo[1];
-                    correctNodes.Add(AnimeCriteria);
-                    counter++;
-                }
-                catch (Exception)
-                {
-                    continue;
-                }
-
-            }
-            return correctNodes;
-        }
-
         private List<AnimePane> loadAnimeViaMobile(string SearchQuery, int limit)
         {
             List<AnimePane> MobileResults = new List<AnimePane>();
             string EncodedForURLSearchQuery = System.Web.HttpUtility.UrlEncode(SearchQuery);
-            PhantomObject.Navigate().GoToUrl("http://kissanime.ru/M?key=" + EncodedForURLSearchQuery + "&sort=search");
+            PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M?key=" + EncodedForURLSearchQuery + "&sort=search");
             foreach (var x in PhantomObject.FindElementsByTagName("article"))
             {
                 string ImageLocation = x.FindElement(By.TagName("img")).GetAttribute("src");
@@ -230,66 +135,44 @@ namespace Otaku_Time
             return MobileResults;
         }
 
-        private string[] getAnimeInfo(string animeName)
+        public void LoadMainScreen()
         {
-            List<string> animeInfo = new List<string> { };
-            try
-            {
-                using (WebClient WC = new WebClient())
-                {
-                    WC.Credentials = new NetworkCredential("", ""); //MyAnimeList credentials for loading images and info.
-                    string WhichAnime = "https://myanimelist.net/api/anime/search.xml?q=" + animeName.ToLower().Replace("(dub)", "").Replace("(sub)", "");
-                    string XML = WC.DownloadString(WhichAnime);
-                    XmlDocument XDoc = new XmlDocument();
-                    XDoc.LoadXml(XML);
-                    animeInfo.Add(XDoc.GetElementsByTagName("image").Item(0).InnerText);
-                    animeInfo.Add(XDoc.GetElementsByTagName("synopsis").Item(0).InnerText);
-                    return animeInfo.ToArray();
-                }
-            }
-            catch (Exception)
-            {
-                animeInfo.Add("https://s-media-cache-ak0.pinimg.com/564x/f0/ef/07/f0ef0713a46529d57536b07064d7562e.jpg");
-                animeInfo.Add("N/A");
-                return animeInfo.ToArray();
-            }
+            buildLayout(MainMobileUpdates());
         }
 
         private void buildLayout(List<AnimePane> AnimeList)
         {
-            MainFrmPanel.SuspendLayout();
-            if (MainFrmPanel.InvokeRequired)
-                MainFrmPanel.Invoke((MethodInvoker)(() => MainFrmPanel.Controls.Clear()));
-            else
-                MainFrmPanel.Controls.Clear();
+            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.SuspendLayout);
+            Statics.InvokeIfRequired(MainFrmPanel, () =>
+            {
+                while(MainFrmPanel.Controls.Count > 0)
+                {
+                    MainFrmPanel.Controls[0].Dispose();
+                }
+            });
+            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.Controls.Clear);
             List<Control> ALIst = new List<Control> { };
+            Random R = new Random();
             foreach (AnimePane SinglePane in AnimeList)
             {
                 AnimeControl AC = new AnimeControl();
-                AC.AnimeName.Text = SinglePane.AnimeName;
+                AC.AnimeName.Text = SinglePane.AnimeName.Replace("&","&&");
                 AC.AnimeImage.ImageLocation = SinglePane.AnimeThumbnailURL;
                 AC.AnimeURL = SinglePane.AnimeSeriesURL;
                 AC.AnimeSynposis = SinglePane.AnimeSeriesSynopsis;
                 ALIst.Add(AC);
             }
-            if (MainFrmPanel.InvokeRequired)
-                MainFrmPanel.Invoke((MethodInvoker)(() => MainFrmPanel.Controls.AddRange(ALIst.ToArray())));
-            else
-                MainFrmPanel.Controls.AddRange(ALIst.ToArray());
-            MainFrmPanel.ResumeLayout();
+            Statics.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(ALIst.ToArray()));
+            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
         }
 
-        private void searchAnime(object sender, KeyEventArgs e)
+        private async void searchAnime(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == System.Windows.Forms.Keys.Enter)
             {
                 e.SuppressKeyPress = true;
                 AnimeSearchQuery.ReadOnly = true;
-                if (LoadAnimeWorker.IsBusy)
-                    LoadAnimeWorker.CancelAsync();
-                while (LoadAnimeWorker.CancellationPending)
-                    Application.DoEvents();
-                LoadAnimeWorker.RunWorkerAsync();
+                await AnimeSearcher();
             }
         }
 
@@ -314,7 +197,7 @@ namespace Otaku_Time
             LoadedAnime.AnimeName.Text = AnimeName;
             LoadedAnime.AnimeSynopsis.Text = AnimeSynopsis;
             LoadedAnime.AnimeImage.ImageLocation = AnimeThumbnailURL;
-            LoadedAnime.AnimeURL = "https://kissanime.to" + AnimeSeriesURL;
+            LoadedAnime.AnimeURL = $"http://{Statics.MasterURL}" + AnimeSeriesURL;
             LoadedAnime.loadAnimeList(AnimeSeriesURL, true);
             MainFrmPanel.SendToBack();
         }
@@ -327,27 +210,22 @@ namespace Otaku_Time
         private void ShowDownloads_Click(object sender, EventArgs e)
         {
             DE.Show();
+            DE.BringToFront();
         }
 
-        private void LoadAnimeWorker_DoWork(object sender, DoWorkEventArgs e)
+        private async Task AnimeSearcher()
         {
-            LoadedAnime.closeMe();
-            UseWaitCursor = true;
-            if (LoadAnimeWorker.CancellationPending)
+            await Task.Run(() =>
             {
-                e.Cancel = true;
-                return;
-            }
-            animeBuilder = loadAnime(AnimeSearchQuery.Text, 999, true);
-        }
-
-        private void LoadAnimeWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            buildLayout(animeBuilder);
-            AnimeSearchQuery.ReadOnly = false;
-            UseWaitCursor = false;
-            AnimeSearchQuery.Clear();
-            AnimeSearchQuery.Visible = false;
+                buildLayout(loadAnimeViaMobile(AnimeSearchQuery.Text, 999));
+                Statics.InvokeIfRequired(this, () =>
+                {
+                    UseWaitCursor = false;
+                    AnimeSearchQuery.ReadOnly = false;
+                    AnimeSearchQuery.Clear();
+                    AnimeSearchQuery.Visible = false;
+                });
+            });
         }
 
         private void InfoBtrn_Click(object sender, EventArgs e)

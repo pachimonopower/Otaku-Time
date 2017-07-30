@@ -110,6 +110,7 @@
             this.Name = "SplashFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kiss My TV";
+            this.Load += new System.EventHandler(this.SplashFrm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisForm);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);

@@ -16,7 +16,6 @@ namespace Otaku_Time
     {
         private string episodeName = "";
         private string episodeURL = "";
-        private bool isFirst = true;
         private List<string> EpNames = new List<string> { };
 
         public Beautiplayer.BeautiplayerCtrl Player;

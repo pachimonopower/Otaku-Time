@@ -63,6 +63,16 @@ namespace Otaku_Time.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _404 {
+            get {
+                object obj = ResourceManager.GetObject("404", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ic_close_white_24dp_1x {
             get {
                 object obj = ResourceManager.GetObject("ic_close_white_24dp_1x", resourceCulture);
@@ -126,6 +136,16 @@ namespace Otaku_Time.Properties {
         internal static System.Drawing.Bitmap ic_search_white_24dp_1x {
             get {
                 object obj = ResourceManager.GetObject("ic_search_white_24dp_1x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap loading {
+            get {
+                object obj = ResourceManager.GetObject("loading", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

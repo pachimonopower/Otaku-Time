@@ -12,6 +12,8 @@ namespace Otaku_Time
 {
     public partial class MyMessageBox : Form
     {
+        public string Response = "";
+
         public MyMessageBox(string message, string title, string buttonOneText, string buttonTwoText)
         {
             InitializeComponent();
@@ -23,14 +25,13 @@ namespace Otaku_Time
 
         public void Load()
         {
-            this.Show();
+            this.ShowDialog();
             this.TopMost = true;
         }
 
         private void response(object sender, EventArgs e)
         {
-            string resp = ((Button)sender).Text;
-            SingleLoadedAnime.response = resp;
+            this.Response = ((Button)sender).Text;
             this.Close();
         }
     }

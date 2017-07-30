@@ -77,6 +77,8 @@
             // 
             this.AnimeImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.AnimeImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AnimeImage.ErrorImage = global::Otaku_Time.Properties.Resources._404;
             this.AnimeImage.ImageLocation = "";
             this.AnimeImage.Location = new System.Drawing.Point(19, 27);
             this.AnimeImage.Name = "AnimeImage";
@@ -148,7 +150,7 @@
             this.DownloadBtn.TabIndex = 1;
             this.DownloadBtn.Text = "Download";
             this.DownloadBtn.UseVisualStyleBackColor = true;
-            this.DownloadBtn.Click += new System.EventHandler(this.button2_Click);
+            this.DownloadBtn.Click += new System.EventHandler(this.DownloadBtn_Click);
             // 
             // WatchNowBtn
             // 
@@ -161,7 +163,7 @@
             this.WatchNowBtn.TabIndex = 0;
             this.WatchNowBtn.Text = "Watch Now";
             this.WatchNowBtn.UseVisualStyleBackColor = true;
-            this.WatchNowBtn.Click += new System.EventHandler(this.button1_Click);
+            this.WatchNowBtn.Click += new System.EventHandler(this.WatchNowBtn_Click);
             // 
             // CloseBox
             // 
@@ -189,7 +191,6 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "SingleLoadedAnime";
             this.Size = new System.Drawing.Size(974, 433);
-            this.Load += new System.EventHandler(this.SingleLoadedAnime_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).EndInit();
