@@ -73,7 +73,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Download In Progress";
-            this.Load += new System.EventHandler(this.InfoFrm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

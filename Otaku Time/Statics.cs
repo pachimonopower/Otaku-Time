@@ -17,8 +17,6 @@ namespace Otaku_Time
         public const string KissAnimeURL = "kissanime.ru";
         public const string KissLewdURL = ""; // not adding this, you either know the url or you don't, filthy animal ;)
         public const string KissCartoonURL = "kisscartoon.io";
-        public const string AuthDetails = "username:password";
-        public static string AuthToken = Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(AuthDetails));
         public static string MasterURL = KissAnimeURL;
 
         private static PhantomJSDriver MyPhantomObject;

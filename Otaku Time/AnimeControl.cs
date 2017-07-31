@@ -28,49 +28,6 @@ namespace Otaku_Time
         {
             AnimeName.Location = new Point(this.Width / 2, 0);
             MainForm = (MainFrm)Parent.Parent;
-            AnimeImage.LoadCompleted += AnimeImage_LoadCompleted;
-        }
-
-        private async void AnimeImage_LoadCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                await Task.Run(() =>
-                {
-                    string newimage = GetNewImageUrl(AnimeName.Text);
-                    if (newimage != "")
-                    {
-                        AnimeImage.ImageLocation = GetNewImageUrl(AnimeName.Text); // new image
-                    }
-                    else
-                    {
-                        AnimeImage.Image = Properties.Resources._404;
-                    }
-                });
-            }
-        }
-
-        private string GetNewImageUrl(string animename)
-        {
-            using (CustomWebClient WC = new CustomWebClient())
-            {
-                string searchqry = animename.ToLower().Replace("(sub)", "").Replace("(dub)", "").Trim().Replace(" ", "+");
-                string endpoint = "https://myanimelist.net/api/anime/search.xml?q=" + searchqry;
-                WC.Headers["Authorization"] = "Basic " + Statics.AuthToken;
-                string res = WC.DownloadString(endpoint);
-                if (res.Trim() != "")
-                {
-                    XmlDocument XMLDoc = new XmlDocument();
-                    XMLDoc.LoadXml(res);
-                    string retval = XMLDoc.GetElementsByTagName("image")[0].InnerText;
-                    XMLDoc = null;
-                    return retval;
-                }
-                else
-                {
-                    return "";
-                }
-            }
         }
 
         private void SendSelfToGrandParent(object sender, EventArgs e)

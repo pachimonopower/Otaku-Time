@@ -150,6 +150,7 @@ namespace Otaku_Time
                     MainFrmPanel.Controls[0].Dispose();
                 }
             });
+            GC.Collect(); //clear old bitmap cache, if needed.
             Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.Controls.Clear);
             List<Control> ALIst = new List<Control> { };
             Random R = new Random();
@@ -157,13 +158,27 @@ namespace Otaku_Time
             {
                 AnimeControl AC = new AnimeControl();
                 AC.AnimeName.Text = SinglePane.AnimeName.Replace("&","&&");
-                AC.AnimeImage.ImageLocation = SinglePane.AnimeThumbnailURL;
+                AC.AnimeImage.Image = GetImage(SinglePane.AnimeThumbnailURL);
                 AC.AnimeURL = SinglePane.AnimeSeriesURL;
                 AC.AnimeSynposis = SinglePane.AnimeSeriesSynopsis;
                 ALIst.Add(AC);
             }
             Statics.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(ALIst.ToArray()));
             Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
+        }
+
+        private Image GetImage(string ImageLocation)
+        {
+            byte[] data = null;
+            using (CustomWebClient WC = new CustomWebClient())
+            {
+                WC.Headers.Add(System.Net.HttpRequestHeader.UserAgent, "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A403 Safari/601.1.46");
+                WC.Headers.Add(System.Net.HttpRequestHeader.Cookie, "cf_clearance=" + PhantomObject.Manage().Cookies.GetCookieNamed("cf_clearance").Value);
+                data = WC.DownloadData(ImageLocation);
+            }
+            Bitmap MP = new Bitmap(new System.IO.MemoryStream(data));
+            data = null;
+            return MP;
         }
 
         private async void searchAnime(object sender, KeyEventArgs e)
@@ -196,7 +211,7 @@ namespace Otaku_Time
             string AnimeThumbnailURL = AC.AnimeImage.ImageLocation;
             LoadedAnime.AnimeName.Text = AnimeName;
             LoadedAnime.AnimeSynopsis.Text = AnimeSynopsis;
-            LoadedAnime.AnimeImage.ImageLocation = AnimeThumbnailURL;
+            LoadedAnime.AnimeImage.Image = AC.AnimeImage.Image;
             LoadedAnime.AnimeURL = $"http://{Statics.MasterURL}" + AnimeSeriesURL;
             LoadedAnime.loadAnimeList(AnimeSeriesURL, true);
             MainFrmPanel.SendToBack();
