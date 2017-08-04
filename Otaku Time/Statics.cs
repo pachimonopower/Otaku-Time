@@ -40,8 +40,8 @@ namespace Otaku_Time
             {
                 string UA = "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A403 Safari/601.1.46";
                 string path = @"D:\Dropbox\My C# Projects\Otaku Time\Otaku Time\"; // used to make the designer work. If you can't access MainFrm designer change this to your phantomjs location.
-                PhantomJSDriverService driverService = PhantomJSDriverService.CreateDefaultService();
-                //driverService = PhantomJSDriverService.CreateDefaultService(path);
+                PhantomJSDriverService// driverService = PhantomJSDriverService.CreateDefaultService();
+                driverService = PhantomJSDriverService.CreateDefaultService(path);
                 var options = new PhantomJSOptions();
                 options.AddAdditionalCapability("phantomjs.page.settings.userAgent", UA);
                 driverService.HideCommandPromptWindow = true;

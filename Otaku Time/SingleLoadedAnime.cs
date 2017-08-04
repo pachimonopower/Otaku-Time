@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
@@ -14,6 +13,8 @@ using HtmlAgilityPack;
 using System.IO;
 using System.Net;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Otaku_Time
 {
@@ -46,7 +47,7 @@ namespace Otaku_Time
             PhantomObject.Navigate().GoToUrl(AnimeURL);
             if (NeedSynopsis)
             {
-                AnimeSynopsis.Text = PhantomObject.FindElementsByTagName("span").Last().Text;
+                AnimeSynopsis.Text = PhantomObject.FindElementsByTagName("p")[2].Text;
                 loadCleanSynopsis();
             }
             var myTable = PhantomObject.FindElementsByClassName("episode");
@@ -265,12 +266,8 @@ namespace Otaku_Time
             return value;
         }
 
-        private void DownloadBtn_Click(object sender, EventArgs e)
+        private async void DownloadBtn_Click(object sender, EventArgs e)
         {
-            if (DownloadWorker.IsBusy)
-            {
-                return;
-            }
             FolderBrowserDialog FBD = new FolderBrowserDialog();
             var result = FBD.ShowDialog();
             if (result != DialogResult.OK)
@@ -282,11 +279,15 @@ namespace Otaku_Time
             InfoFrm = new InfoFrm();
             InfoFrm.Show();
             InfoFrm.BringToFront();
-            DownloadWorker.RunWorkerAsync();
+            DownloadBtn.Enabled = false;
+            WatchNowBtn.Enabled = false;
+            await Task.Run((Action)DownloadAnime);
+            DownloadBtn.Enabled = true;
+            WatchNowBtn.Enabled = true;
             UseWaitCursor = false;
         }
 
-        private void DownloadWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void DownloadAnime()
         {
             Dictionary<string, string> Vals = new Dictionary<string, string>();
             if (AnimeEpisodeList.InvokeRequired)

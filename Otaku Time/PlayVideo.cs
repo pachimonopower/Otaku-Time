@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-//using WMPLib;
+using Beautiplayer;
 
 namespace Otaku_Time
 {
@@ -18,7 +18,7 @@ namespace Otaku_Time
         private string episodeURL = "";
         private List<string> EpNames = new List<string> { };
 
-        public Beautiplayer.BeautiplayerCtrl Player;
+        public BeautiplayerCtrl Player;
 
         public PlayVideo(string epName, string url)
         {
@@ -38,7 +38,7 @@ namespace Otaku_Time
 
         private void PlayVideo_Load(object sender, EventArgs e)
         {
-            Player = new Beautiplayer.BeautiplayerCtrl();
+            Player = new BeautiplayerCtrl();
             Player.Dock = DockStyle.Fill;
             this.Controls.Add(Player);
             this.Text = episodeName;

@@ -12,8 +12,23 @@ namespace Otaku_Time
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if(args.Count() > 0)
+            {
+                switch(args[0])
+                {
+                    case Statics.KissAnimeURL:
+                        Statics.MasterURL = Statics.KissAnimeURL;
+                        break;
+                    case Statics.KissLewdURL:
+                        Statics.MasterURL = Statics.KissLewdURL;
+                        break;
+                    case Statics.KissCartoonURL:
+                        Statics.MasterURL = Statics.KissCartoonURL;
+                        break;
+                }
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SplashFrm());

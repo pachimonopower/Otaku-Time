@@ -123,9 +123,6 @@
   <metadata name="MenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>122, 17</value>
   </metadata>
-  <metadata name="LoadAnimeWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>230, 17</value>
-  </metadata>
   <data name="textBox1.Text" xml:space="preserve">
     <value>Thanks for using Otaku Time, an is and always will be a free (and ad-free) solution to watching and downloading anime! Send along any improvements you might have to me@jackryder.co.uk and i'll be sure to look at your request! </value>
   </data>

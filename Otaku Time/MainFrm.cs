@@ -24,7 +24,6 @@ namespace Otaku_Time
     public partial class MainFrm : Form
     {
         public PhantomJSDriver PhantomObject;
-        private int counter = 0;
         public DownloadingEpisodes DE;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -71,8 +70,17 @@ namespace Otaku_Time
         {
             if (e.Button == MouseButtons.Left)
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                if(e.Clicks == 1)
+                {
+                    ReleaseCapture();
+                    SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+                else if(e.Clicks == 2)
+                {
+                    var SelectedState = this.WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+                    this.WindowState = SelectedState;
+                }
+                
             }
         }
         #region Menu Options
@@ -158,7 +166,14 @@ namespace Otaku_Time
             {
                 AnimeControl AC = new AnimeControl();
                 AC.AnimeName.Text = SinglePane.AnimeName.Replace("&","&&");
-                AC.AnimeImage.Image = GetImage(SinglePane.AnimeThumbnailURL);
+                if (SinglePane.AnimeThumbnailURL.Contains(Statics.MasterURL))
+                {
+                    AC.AnimeImage.Image = GetImage(SinglePane.AnimeThumbnailURL);
+                }
+                else
+                {
+                    AC.AnimeImage.ImageLocation = SinglePane.AnimeThumbnailURL;
+                }
                 AC.AnimeURL = SinglePane.AnimeSeriesURL;
                 AC.AnimeSynposis = SinglePane.AnimeSeriesSynopsis;
                 ALIst.Add(AC);
@@ -241,6 +256,7 @@ namespace Otaku_Time
                     AnimeSearchQuery.Visible = false;
                 });
             });
+            MainFrmPanel.Refresh();
         }
 
         private void InfoBtrn_Click(object sender, EventArgs e)
@@ -265,6 +281,29 @@ namespace Otaku_Time
             }
             PhantomObject.Dispose();
             Application.Exit();
+        }
+
+        private const int cGrip = 32;      // Grip size
+        private const int cCaption = 32;   // Caption bar height;
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x84)
+            {  // Trap WM_NCHITTEST
+                Point pos = new Point(m.LParam.ToInt32());
+                pos = this.PointToClient(pos);
+                if (pos.Y < cCaption)
+                {
+                    m.Result = (IntPtr)2;  // HTCAPTION
+                    return;
+                }
+                if (pos.X >= this.ClientSize.Width - cGrip && pos.Y >= this.ClientSize.Height - cGrip)
+                {
+                    m.Result = (IntPtr)17; // HTBOTTOMRIGHT
+                    return;
+                }
+            }
+            base.WndProc(ref m);
         }
     }
 }

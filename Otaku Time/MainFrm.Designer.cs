@@ -59,6 +59,7 @@
             // 
             this.optionStrip.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.optionStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.optionStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.optionStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ProgramText,
             this.CloseFrm,
@@ -67,7 +68,7 @@
             this.optionStrip.Location = new System.Drawing.Point(0, 0);
             this.optionStrip.Name = "optionStrip";
             this.optionStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.optionStrip.Size = new System.Drawing.Size(974, 31);
+            this.optionStrip.Size = new System.Drawing.Size(1299, 31);
             this.optionStrip.TabIndex = 0;
             this.optionStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
             this.optionStrip.Resize += new System.EventHandler(this.optionStrip_Resize);
@@ -136,6 +137,7 @@
             // 
             this.MenuStrip.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.MenuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.MenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.InfoBtrn,
             this.AnimeSearchQuery,
@@ -145,7 +147,7 @@
             this.MenuStrip.Location = new System.Drawing.Point(0, 31);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MenuStrip.Size = new System.Drawing.Size(974, 31);
+            this.MenuStrip.Size = new System.Drawing.Size(1299, 33);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "toolStrip2";
             this.MenuStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
@@ -171,7 +173,7 @@
             this.AnimeSearchQuery.Margin = new System.Windows.Forms.Padding(1, 3, 1, 3);
             this.AnimeSearchQuery.Name = "AnimeSearchQuery";
             this.AnimeSearchQuery.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.AnimeSearchQuery.Size = new System.Drawing.Size(100, 25);
+            this.AnimeSearchQuery.Size = new System.Drawing.Size(132, 27);
             this.AnimeSearchQuery.Visible = false;
             this.AnimeSearchQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchAnime);
             // 
@@ -222,29 +224,29 @@
             // 
             // MainFrmPanel
             // 
-            this.MainFrmPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.MainFrmPanel.AutoScroll = true;
             this.MainFrmPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.MainFrmPanel.Location = new System.Drawing.Point(0, 62);
+            this.MainFrmPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainFrmPanel.Location = new System.Drawing.Point(0, 64);
+            this.MainFrmPanel.Margin = new System.Windows.Forms.Padding(4);
             this.MainFrmPanel.Name = "MainFrmPanel";
-            this.MainFrmPanel.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.MainFrmPanel.Size = new System.Drawing.Size(974, 433);
+            this.MainFrmPanel.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.MainFrmPanel.Size = new System.Drawing.Size(1299, 545);
             this.MainFrmPanel.TabIndex = 2;
             // 
             // AboutInfo
             // 
-            this.AboutInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.AboutInfo.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.AboutInfo.Controls.Add(this.VersionTxt);
             this.AboutInfo.Controls.Add(this.textBox1);
             this.AboutInfo.Controls.Add(this.label1);
             this.AboutInfo.Controls.Add(this.pictureBox2);
             this.AboutInfo.Controls.Add(this.pictureBox1);
-            this.AboutInfo.Location = new System.Drawing.Point(0, 62);
+            this.AboutInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AboutInfo.Location = new System.Drawing.Point(0, 64);
+            this.AboutInfo.Margin = new System.Windows.Forms.Padding(4);
             this.AboutInfo.Name = "AboutInfo";
-            this.AboutInfo.Size = new System.Drawing.Size(974, 433);
+            this.AboutInfo.Size = new System.Drawing.Size(1299, 545);
             this.AboutInfo.TabIndex = 4;
             // 
             // VersionTxt
@@ -253,10 +255,11 @@
             this.VersionTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.VersionTxt.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VersionTxt.ForeColor = System.Drawing.Color.White;
-            this.VersionTxt.Location = new System.Drawing.Point(288, 396);
+            this.VersionTxt.Location = new System.Drawing.Point(384, 487);
+            this.VersionTxt.Margin = new System.Windows.Forms.Padding(4);
             this.VersionTxt.Name = "VersionTxt";
             this.VersionTxt.ReadOnly = true;
-            this.VersionTxt.Size = new System.Drawing.Size(390, 25);
+            this.VersionTxt.Size = new System.Drawing.Size(520, 31);
             this.VersionTxt.TabIndex = 4;
             this.VersionTxt.Text = "You\'re using Otaku Time Version: ";
             this.VersionTxt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -267,11 +270,12 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Tahoma", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.Color.White;
-            this.textBox1.Location = new System.Drawing.Point(288, 107);
+            this.textBox1.Location = new System.Drawing.Point(384, 132);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(398, 158);
+            this.textBox1.Size = new System.Drawing.Size(531, 194);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -281,18 +285,20 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(304, 26);
+            this.label1.Location = new System.Drawing.Point(405, 32);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(367, 33);
+            this.label1.Size = new System.Drawing.Size(466, 41);
             this.label1.TabIndex = 2;
             this.label1.Text = "Thanks for using Otaku Time!";
             // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Otaku_Time.Properties.Resources.yoshino;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 107);
+            this.pictureBox2.Location = new System.Drawing.Point(0, 132);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(282, 328);
+            this.pictureBox2.Size = new System.Drawing.Size(376, 404);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
@@ -300,38 +306,39 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Otaku_Time.Properties.Resources.renge;
-            this.pictureBox1.Location = new System.Drawing.Point(692, 107);
+            this.pictureBox1.Location = new System.Drawing.Point(923, 132);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(282, 328);
+            this.pictureBox1.Size = new System.Drawing.Size(376, 404);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // LoadedAnime
             // 
-            this.LoadedAnime.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LoadedAnime.AutoSize = true;
             this.LoadedAnime.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.LoadedAnime.Location = new System.Drawing.Point(0, 62);
+            this.LoadedAnime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadedAnime.Location = new System.Drawing.Point(0, 64);
+            this.LoadedAnime.Margin = new System.Windows.Forms.Padding(0);
             this.LoadedAnime.Name = "LoadedAnime";
-            this.LoadedAnime.Size = new System.Drawing.Size(974, 433);
+            this.LoadedAnime.Size = new System.Drawing.Size(1299, 545);
             this.LoadedAnime.TabIndex = 4;
             // 
             // MainFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(974, 495);
-            this.Controls.Add(this.MenuStrip);
-            this.Controls.Add(this.optionStrip);
+            this.ClientSize = new System.Drawing.Size(1299, 609);
             this.Controls.Add(this.MainFrmPanel);
             this.Controls.Add(this.LoadedAnime);
             this.Controls.Add(this.AboutInfo);
+            this.Controls.Add(this.MenuStrip);
+            this.Controls.Add(this.optionStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainFrm";
             this.ShowIcon = false;
             this.Text = "Otaku Time";

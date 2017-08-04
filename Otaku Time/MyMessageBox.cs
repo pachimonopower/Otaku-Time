@@ -23,7 +23,7 @@ namespace Otaku_Time
             this.button2.Text = buttonTwoText;
         }
 
-        public void Load()
+        public new void Load()
         {
             this.ShowDialog();
             this.TopMost = true;
