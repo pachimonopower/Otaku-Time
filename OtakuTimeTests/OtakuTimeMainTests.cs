@@ -21,6 +21,7 @@ namespace OtakuTimeTests
             PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M");
             System.Threading.Thread.Sleep(6000); //bypass cloudflare
             Assert.IsTrue(PhantomObject.Url.Contains(Statics.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
+            PhantomObject.Close();
         }
     }
 }
