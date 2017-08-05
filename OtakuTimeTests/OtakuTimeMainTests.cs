@@ -21,6 +21,7 @@ namespace OtakuTimeTests
             PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M");
             System.Threading.Thread.Sleep(6000); //bypass cloudflare
             string title = PhantomObject.Title;
+            Console.WriteLine(title);
             Assert.IsTrue(title.ToLower().Contains("watch"));
         }
     }
