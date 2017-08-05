@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otaku Time", "Otaku Time\Otaku Time.csproj", "{0329D444-9047-42B0-A90D-E06ABFDE06F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtakuTimeTests", "OtakuTimeTests\OtakuTimeTests.csproj", "{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{0329D444-9047-42B0-A90D-E06ABFDE06F3}.Release|x64.Build.0 = Debug|Any CPU
 		{0329D444-9047-42B0-A90D-E06ABFDE06F3}.Release|x86.ActiveCfg = Debug|x86
 		{0329D444-9047-42B0-A90D-E06ABFDE06F3}.Release|x86.Build.0 = Debug|x86
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|x64.Build.0 = Release|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{05EEECFC-4C5C-42FD-85A0-6F6A138367EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
