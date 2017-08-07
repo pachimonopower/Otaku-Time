@@ -7,6 +7,9 @@ Kissanime based video streamer and downloader. Ad free, the way the internet was
 ## What is 'Otaku Time'
 Otaku time is a project started long ago because the website I watch anime from was awful, since it was unreliable and full of advertisements. It was also a lot of effort to download videos, and thus Otaku Time was born to combat this problem.
 
+## License
+Otaku Time is licensed under the [MIT license](https://github.com/JackRyder/Otaku-Time/blob/master/LICENSE).
+
 ## Is this allowed?
 I dunno, probably not.
 
