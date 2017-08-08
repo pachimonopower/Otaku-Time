@@ -10,17 +10,17 @@ namespace OtakuTimeTests
         [TestMethod]
         public void GetPhantomObjectTest()
         {
-            var PhantomObject = Statics.PhantomObject();
+            var PhantomObject = WebDriverClass.GetPhantomJSInstance();
             Assert.AreNotEqual(null, PhantomObject);
         }
 
         [TestMethod]
         public void ConnectToMasterTest()
         {
-            var PhantomObject = Statics.PhantomObject();
-            PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M");
+            var PhantomObject = WebDriverClass.GetPhantomJSInstance();
+            PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
             System.Threading.Thread.Sleep(6000); //bypass cloudflare
-            Assert.IsTrue(PhantomObject.Url.Contains(Statics.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
+            Assert.IsTrue(PhantomObject.Url.Contains(VariablesClass.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
             PhantomObject.Quit();
         }
     }

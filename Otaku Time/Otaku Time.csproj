@@ -63,7 +63,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>unnamed.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E67A6C23F67DB9BF5235B88D14A484D60B77E8EC</ManifestCertificateThumbprint>
@@ -109,23 +109,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimeControl.cs">
+    <Compile Include="Classes\DecoratorClass.cs" />
+    <Compile Include="Classes\VariablesClass.cs" />
+    <Compile Include="Classes\WebDriverClass.cs" />
+    <Compile Include="Controls\AnimeControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="AnimeControl.Designer.cs">
+    <Compile Include="Controls\AnimeControl.Designer.cs">
       <DependentUpon>AnimeControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="AnimePane.cs" />
+    <Compile Include="Classes\AnimeInfoClass.cs" />
     <Compile Include="DownloadingEpisodes.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DownloadingEpisodes.Designer.cs">
       <DependentUpon>DownloadingEpisodes.cs</DependentUpon>
     </Compile>
-    <Compile Include="EpisodeDownloadObject.cs">
+    <Compile Include="Controls\EpisodeDownloadObject.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EpisodeDownloadObject.Designer.cs">
+    <Compile Include="Controls\EpisodeDownloadObject.Designer.cs">
       <DependentUpon>EpisodeDownloadObject.cs</DependentUpon>
     </Compile>
     <Compile Include="InfoFrm.cs">
@@ -154,11 +157,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemStripBar.cs" />
-    <Compile Include="SingleLoadedAnime.cs">
+    <Compile Include="Controls\SingleLoadedAnime.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SingleLoadedAnime.Designer.cs">
+    <Compile Include="Controls\SingleLoadedAnime.Designer.cs">
       <DependentUpon>SingleLoadedAnime.cs</DependentUpon>
     </Compile>
     <Compile Include="SplashFrm.cs">
@@ -167,14 +169,14 @@
     <Compile Include="SplashFrm.Designer.cs">
       <DependentUpon>SplashFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Statics.cs" />
-    <EmbeddedResource Include="AnimeControl.resx">
+    <Compile Include="Classes\StaticsClass.cs" />
+    <EmbeddedResource Include="Controls\AnimeControl.resx">
       <DependentUpon>AnimeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DownloadingEpisodes.resx">
       <DependentUpon>DownloadingEpisodes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EpisodeDownloadObject.resx">
+    <EmbeddedResource Include="Controls\EpisodeDownloadObject.resx">
       <DependentUpon>EpisodeDownloadObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InfoFrm.resx">
@@ -199,7 +201,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SingleLoadedAnime.resx">
+    <EmbeddedResource Include="Controls\SingleLoadedAnime.resx">
       <DependentUpon>SingleLoadedAnime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SplashFrm.resx">
@@ -268,7 +270,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\404.jpg" />
     <EmbeddedResource Include="Resources\loading.gif" />
-    <EmbeddedResource Include="unnamed.ico" />
+    <EmbeddedResource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

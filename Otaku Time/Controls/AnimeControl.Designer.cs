@@ -70,7 +70,6 @@
             this.Controls.Add(this.AnimeImage);
             this.Name = "AnimeControl";
             this.Size = new System.Drawing.Size(231, 301);
-            this.Load += new System.EventHandler(this.AnimeControl_Load);
             this.Click += new System.EventHandler(this.SendSelfToGrandParent);
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).EndInit();
             this.ResumeLayout(false);

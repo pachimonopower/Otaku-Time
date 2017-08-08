@@ -34,7 +34,7 @@ namespace Otaku_Time
             if (this.DesignMode == false)
             {
                 InitializeComponent();
-                PhantomObject = Statics.PhantomObject();
+                PhantomObject = WebDriverClass.GetPhantomJSInstance();
                 DE = DownloadingEpisodes.GetMe();
             }
         }
@@ -121,7 +121,7 @@ namespace Otaku_Time
             string name = AnimeEpisodeList.SelectedItems[0].Text;
             string attributeName = AnimeEpisodeList.SelectedItems[0].Tag.ToString();
             string redirectVideoURL = "";
-            if (Statics.MasterURL == Statics.KissLewdURL)
+            if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
             {
                 // the so called lewd url is dodgy, but the owner doesn't captcha, so scraping is a bit easier.
                 string animeurlname = PhantomObject.Url.Substring(PhantomObject.Url.LastIndexOf("/") + 1);
@@ -172,7 +172,7 @@ namespace Otaku_Time
         /// <returns></returns>
         private string RunViaDesktop(string animeurlname, string name, string attributeName)
         {
-            string endpoint = $"http://{Statics.KissLewdURL}/Hentai/{animeurlname}/{name.Replace(" ", "-")}?id={attributeName}";
+            string endpoint = $"http://{VariablesClass.KissLewdURL}/Hentai/{animeurlname}/{name.Replace(" ", "-")}?id={attributeName}";
             string value = "";
             PhantomObject.Navigate().GoToUrl(endpoint);
             PhantomObject.ExecuteScript("$('#selectServer').val('openload').change();");
@@ -180,7 +180,7 @@ namespace Otaku_Time
             var xo = PhantomObject.FindElementsByTagName("a").FirstOrDefault(x => x.Text.Contains("CLICK HERE"));
             if(xo != null)
             {
-                value = Statics.GetOpenloadLink(xo.GetAttribute("href"));
+                value = StaticsClass.GetOpenloadLink(xo.GetAttribute("href"));
             }
             PhantomObject.Navigate().GoToUrl(AnimeURL);
             return value;
@@ -217,7 +217,7 @@ namespace Otaku_Time
             if (!string.IsNullOrWhiteSpace(AlternativeSourceUrl))
             {
                 string value = "";
-                if (AlternativeSourceUrl.Contains("openload")) value = Statics.GetOpenloadLink(AlternativeSourceUrl);
+                if (AlternativeSourceUrl.Contains("openload")) value = StaticsClass.GetOpenloadLink(AlternativeSourceUrl);
                 else if (AlternativeSourceUrl.Contains("rapidvideo")) value = GetRapidVideoLink(AlternativeSourceUrl);
                 else value = AlternativeSourceUrl; // its the google link. weird.
                 PhantomObject.Navigate().GoToUrl(AnimeURL);
@@ -311,7 +311,7 @@ namespace Otaku_Time
                 string directoryPath = path + @"\" + GetSafeFilename(AnimeName.Text);
                 Directory.CreateDirectory(directoryPath);
                 string redirectorLink = "";
-                if (Statics.MasterURL == Statics.KissLewdURL)
+                if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
                 {
                     string animeurlname = PhantomObject.Url.Substring(PhantomObject.Url.LastIndexOf("/") + 1);
                     redirectorLink = RunViaDesktop(animeurlname, episodeName, episodeURL);

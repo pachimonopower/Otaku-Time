@@ -21,6 +21,7 @@ namespace Otaku_Time
         private DownloadingEpisodes()
         {
             InitializeComponent();
+            DecoratorClass.GoThroughDecorate(this);
         }
 
         public int DownloadCount

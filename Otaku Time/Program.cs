@@ -18,14 +18,14 @@ namespace Otaku_Time
             {
                 switch(args[0])
                 {
-                    case Statics.KissAnimeURL:
-                        Statics.MasterURL = Statics.KissAnimeURL;
+                    case VariablesClass.KissAnimeURL:
+                        VariablesClass.MasterURL = VariablesClass.KissAnimeURL;
                         break;
-                    case Statics.KissLewdURL:
-                        Statics.MasterURL = Statics.KissLewdURL;
+                    case VariablesClass.KissLewdURL:
+                        VariablesClass.MasterURL = VariablesClass.KissLewdURL;
                         break;
-                    case Statics.KissCartoonURL:
-                        Statics.MasterURL = Statics.KissCartoonURL;
+                    case VariablesClass.KissCartoonURL:
+                        VariablesClass.MasterURL = VariablesClass.KissCartoonURL;
                         break;
                 }
             }

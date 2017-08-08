@@ -15,24 +15,30 @@ namespace Otaku_Time
 {
     public partial class AnimeControl : UserControl
     {
-        private MainFrm MainForm;
-        public string AnimeSynposis = "";
-        public string AnimeURL = "";
+        public AnimeInfoClass AnimeInfo
+        {
+            get;
+        }
+
+        public delegate void LoadAnimeDelegate(AnimeControl AnimeControl);
+        public event LoadAnimeDelegate LoadAnime;
+
 
         public AnimeControl()
         {
             InitializeComponent();
         }
 
-        private void AnimeControl_Load(object sender, EventArgs e)
+        public AnimeControl(AnimeInfoClass AnimeInfo)
         {
-            AnimeName.Location = new Point(this.Width / 2, 0);
-            MainForm = (MainFrm)Parent.Parent;
+            InitializeComponent();
+            this.AnimeInfo = AnimeInfo;
+            this.AnimeName.Text = AnimeInfo.AnimeName.Replace("&", "&&");
         }
 
         private void SendSelfToGrandParent(object sender, EventArgs e)
         {
-            MainForm.startLoadingAnimeInformation(this);
+            LoadAnime(this);
         }
     }
     class CustomWebClient : WebClient

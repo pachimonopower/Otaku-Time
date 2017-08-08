@@ -31,24 +31,24 @@ namespace Otaku_Time
         public SplashFrm()
         {
             InitializeComponent();
-            Statics.DecorateControl(this);
-            PhantomObject = Statics.PhantomObject();
+            DecoratorClass.GoThroughDecorate(this);
+            PhantomObject = WebDriverClass.GetPhantomJSInstance();
         }
 
         private async void SplashFrm_Load(object sender, EventArgs e)
         {
             await Task.Run(() =>
             {
-                PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M");
+                PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
                 DoAuth();
             });
             await Task.Run(() =>
             {
-                Statics.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Loading new titles!");
-                Statics.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
+                StaticsClass.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Loading new titles!");
+                StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
                 MainFrm.LoadMainScreen();
             });
-            Statics.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
+            StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
             MainFrm.Show();
             this.Hide();
         }
@@ -56,24 +56,24 @@ namespace Otaku_Time
         private void DoAuth()
         {
             string TitleText = "";
-            switch(Statics.MasterURL)
+            switch(VariablesClass.MasterURL)
             {
-                case Statics.KissAnimeURL:
+                case VariablesClass.KissAnimeURL:
                     TitleText = "Please wait 5 seconds";
                     break;
-                case Statics.KissLewdURL:
+                case VariablesClass.KissLewdURL:
                     TitleText = "Just a moment";
                     break;
-                case Statics.KissCartoonURL:
+                case VariablesClass.KissCartoonURL:
 
                     break;
             }
             if (PhantomObject.Title.Contains(TitleText))
             {
-                Statics.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Gaining authentication from server.");
+                StaticsClass.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Gaining authentication from server.");
                 if (counter != 4)
                 {
-                    Statics.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
+                    StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
                     counter++;
                 }
                 System.Threading.Thread.Sleep(2000);

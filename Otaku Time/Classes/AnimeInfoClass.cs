@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Otaku_Time
 {
-    class AnimePane
+    public class AnimeInfoClass
     {
         public string AnimeThumbnailURL = "";
         public string AnimeName = "";

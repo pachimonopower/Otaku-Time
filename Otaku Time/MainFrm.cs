@@ -26,13 +26,52 @@ namespace Otaku_Time
         public PhantomJSDriver PhantomObject;
         public DownloadingEpisodes DE;
 
+        #region Win API Stuff
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-
+        private const int cGrip = 32;      // Grip size
+        private const int cCaption = 32;   // Caption bar height;
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x84)
+            {  // Trap WM_NCHITTEST
+                Point pos = new Point(m.LParam.ToInt32());
+                pos = this.PointToClient(pos);
+                if (pos.Y < cCaption)
+                {
+                    m.Result = (IntPtr)2;  // HTCAPTION
+                    return;
+                }
+                if (pos.X >= this.ClientSize.Width - cGrip && pos.Y >= this.ClientSize.Height - cGrip)
+                {
+                    m.Result = (IntPtr)17; // HTBOTTOMRIGHT
+                    return;
+                }
+            }
+            base.WndProc(ref m);
+        }
+        private void MoveThisform(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1)
+                {
+                    ReleaseCapture();
+                    SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+                else if (e.Clicks == 2)
+                {
+                    var SelectedState = this.WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+                    this.WindowState = SelectedState;
+                }
+
+            }
+        }
+        #endregion
 
         public MainFrm()
         {
@@ -45,44 +84,14 @@ namespace Otaku_Time
             optionStrip.Renderer = new RemStripBar();
             if (this.DesignMode == false)
             {
-                PhantomObject = Statics.PhantomObject();
+                PhantomObject = WebDriverClass.GetPhantomJSInstance();
                 DE = DownloadingEpisodes.GetMe();
                 DE.Hide();
             }
             VersionTxt.Text += Application.ProductVersion;
-            GoThroughDecorate(this);
-            ProgramText.BackColor = Statics.GetColor();
-            LoadedAnime.AnimeSynopsis.BackColor = Statics.GetColor();
+            DecoratorClass.GoThroughDecorate(this);
         }
 
-        private void GoThroughDecorate(Control C)
-        {
-            if (C.BackColor == SystemColors.MenuHighlight)
-            {
-                Statics.DecorateControl(C);
-            }
-            foreach (Control Cont in C.Controls)
-            {
-                GoThroughDecorate(Cont);
-            }
-        }
-        private void MoveThisform(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if(e.Clicks == 1)
-                {
-                    ReleaseCapture();
-                    SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-                }
-                else if(e.Clicks == 2)
-                {
-                    var SelectedState = this.WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
-                    this.WindowState = SelectedState;
-                }
-                
-            }
-        }
         #region Menu Options
         private void CloseBtnClick(object sender, EventArgs e)
         {
@@ -104,18 +113,18 @@ namespace Otaku_Time
             this.WindowState = FormWindowState.Minimized;
         }
         #endregion
-        private List<AnimePane> MainMobileUpdates()
+        private List<AnimeInfoClass> MainMobileUpdates()
         {
-            List<AnimePane> Animes = new List<AnimePane>();
+            List<AnimeInfoClass> Animes = new List<AnimeInfoClass>();
 
             if (PhantomObject.Title.Contains("KissAnime Mobile") == false)
-                PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/m");
+                PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/m");
             foreach (var x in PhantomObject.FindElementsByTagName("article"))
             {
                 string ImageLocation = x.FindElement(By.TagName("img")).GetAttribute("src");
                 string AnimeName = x.FindElement(By.ClassName("post-content")).FindElement(By.TagName("h2")).FindElement(By.TagName("a")).Text;
                 string AnimeSeriesURL = x.GetAttribute("alink");
-                AnimePane AP = new AnimePane();
+                AnimeInfoClass AP = new AnimeInfoClass();
                 AP.AnimeName = AnimeName;
                 AP.AnimeThumbnailURL = ImageLocation;
                 AP.AnimeSeriesURL = AnimeSeriesURL;
@@ -124,17 +133,17 @@ namespace Otaku_Time
             return Animes;
         }
 
-        private List<AnimePane> loadAnimeViaMobile(string SearchQuery, int limit)
+        private List<AnimeInfoClass> loadAnimeViaMobile(string SearchQuery, int limit)
         {
-            List<AnimePane> MobileResults = new List<AnimePane>();
+            List<AnimeInfoClass> MobileResults = new List<AnimeInfoClass>();
             string EncodedForURLSearchQuery = System.Web.HttpUtility.UrlEncode(SearchQuery);
-            PhantomObject.Navigate().GoToUrl($"http://{Statics.MasterURL}/M?key=" + EncodedForURLSearchQuery + "&sort=search");
+            PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M?key=" + EncodedForURLSearchQuery + "&sort=search");
             foreach (var x in PhantomObject.FindElementsByTagName("article"))
             {
                 string ImageLocation = x.FindElement(By.TagName("img")).GetAttribute("src");
                 string AnimeName = x.FindElement(By.ClassName("post-content")).FindElement(By.TagName("h2")).FindElement(By.TagName("a")).Text;
                 string AnimeSeriesURL = x.GetAttribute("alink");
-                AnimePane AP = new AnimePane();
+                AnimeInfoClass AP = new AnimeInfoClass();
                 AP.AnimeName = AnimeName;
                 AP.AnimeThumbnailURL = ImageLocation;
                 AP.AnimeSeriesURL = AnimeSeriesURL;
@@ -148,38 +157,36 @@ namespace Otaku_Time
             buildLayout(MainMobileUpdates());
         }
 
-        private void buildLayout(List<AnimePane> AnimeList)
+        private void buildLayout(List<AnimeInfoClass> AnimeList)
         {
-            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.SuspendLayout);
-            Statics.InvokeIfRequired(MainFrmPanel, () =>
+            StaticsClass.InvokeIfRequired(MainFrmPanel, MainFrmPanel.SuspendLayout);
+            StaticsClass.InvokeIfRequired(MainFrmPanel, () =>
             {
-                while(MainFrmPanel.Controls.Count > 0)
+                while (MainFrmPanel.Controls.Count > 0)
                 {
                     MainFrmPanel.Controls[0].Dispose();
                 }
             });
             GC.Collect(); //clear old bitmap cache, if needed.
-            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.Controls.Clear);
+            StaticsClass.InvokeIfRequired(MainFrmPanel, MainFrmPanel.Controls.Clear);
             List<Control> ALIst = new List<Control> { };
             Random R = new Random();
-            foreach (AnimePane SinglePane in AnimeList)
+            foreach (AnimeInfoClass AnimeInfo in AnimeList)
             {
-                AnimeControl AC = new AnimeControl();
-                AC.AnimeName.Text = SinglePane.AnimeName.Replace("&","&&");
-                if (SinglePane.AnimeThumbnailURL.Contains(Statics.MasterURL))
+                AnimeControl AnimeControl = new AnimeControl(AnimeInfo);
+                AnimeControl.LoadAnime += startLoadingAnimeInformation;
+                if (AnimeInfo.AnimeThumbnailURL.Contains(VariablesClass.MasterURL))
                 {
-                    AC.AnimeImage.Image = GetImage(SinglePane.AnimeThumbnailURL);
+                    AnimeControl.AnimeImage.Image = GetImage(AnimeInfo.AnimeThumbnailURL);
                 }
                 else
                 {
-                    AC.AnimeImage.ImageLocation = SinglePane.AnimeThumbnailURL;
+                    AnimeControl.AnimeImage.ImageLocation = AnimeInfo.AnimeThumbnailURL;
                 }
-                AC.AnimeURL = SinglePane.AnimeSeriesURL;
-                AC.AnimeSynposis = SinglePane.AnimeSeriesSynopsis;
-                ALIst.Add(AC);
+                ALIst.Add(AnimeControl);
             }
-            Statics.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(ALIst.ToArray()));
-            Statics.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
+            StaticsClass.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(ALIst.ToArray()));
+            StaticsClass.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
         }
 
         private Image GetImage(string ImageLocation)
@@ -187,7 +194,7 @@ namespace Otaku_Time
             byte[] data = null;
             using (CustomWebClient WC = new CustomWebClient())
             {
-                WC.Headers.Add(System.Net.HttpRequestHeader.UserAgent, "Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/53.0.2785.109 Mobile/14A403 Safari/601.1.46");
+                WC.Headers.Add(System.Net.HttpRequestHeader.UserAgent, VariablesClass.UserAgentString);
                 WC.Headers.Add(System.Net.HttpRequestHeader.Cookie, "cf_clearance=" + PhantomObject.Manage().Cookies.GetCookieNamed("cf_clearance").Value);
                 data = WC.DownloadData(ImageLocation);
             }
@@ -220,14 +227,14 @@ namespace Otaku_Time
 
         public void startLoadingAnimeInformation(AnimeControl AC)
         {
-            string AnimeSeriesURL = AC.AnimeURL;
+            string AnimeSeriesURL = AC.AnimeInfo.AnimeSeriesURL;
             string AnimeName = AC.AnimeName.Text;
-            string AnimeSynopsis = AC.AnimeSynposis;
+            string AnimeSynopsis = AC.AnimeInfo.AnimeSeriesSynopsis;
             string AnimeThumbnailURL = AC.AnimeImage.ImageLocation;
             LoadedAnime.AnimeName.Text = AnimeName;
             LoadedAnime.AnimeSynopsis.Text = AnimeSynopsis;
             LoadedAnime.AnimeImage.Image = AC.AnimeImage.Image;
-            LoadedAnime.AnimeURL = $"http://{Statics.MasterURL}" + AnimeSeriesURL;
+            LoadedAnime.AnimeURL = $"http://{VariablesClass.MasterURL}" + AnimeSeriesURL;
             LoadedAnime.loadAnimeList(AnimeSeriesURL, true);
             MainFrmPanel.SendToBack();
         }
@@ -248,7 +255,7 @@ namespace Otaku_Time
             await Task.Run(() =>
             {
                 buildLayout(loadAnimeViaMobile(AnimeSearchQuery.Text, 999));
-                Statics.InvokeIfRequired(this, () =>
+                StaticsClass.InvokeIfRequired(this, () =>
                 {
                     UseWaitCursor = false;
                     AnimeSearchQuery.ReadOnly = false;
@@ -257,6 +264,7 @@ namespace Otaku_Time
                 });
             });
             MainFrmPanel.Refresh();
+            MainFrmPanel.BringToFront();
         }
 
         private void InfoBtrn_Click(object sender, EventArgs e)
@@ -279,31 +287,23 @@ namespace Otaku_Time
                     return;
                 }
             }
-            PhantomObject.Dispose();
+            PhantomObject.Quit();
             Application.Exit();
         }
+    }
 
-        private const int cGrip = 32;      // Grip size
-        private const int cCaption = 32;   // Caption bar height;
+    class RemStripBar : ToolStripSystemRenderer
+    {
 
-        protected override void WndProc(ref Message m)
+        public RemStripBar()
         {
-            if (m.Msg == 0x84)
-            {  // Trap WM_NCHITTEST
-                Point pos = new Point(m.LParam.ToInt32());
-                pos = this.PointToClient(pos);
-                if (pos.Y < cCaption)
-                {
-                    m.Result = (IntPtr)2;  // HTCAPTION
-                    return;
-                }
-                if (pos.X >= this.ClientSize.Width - cGrip && pos.Y >= this.ClientSize.Height - cGrip)
-                {
-                    m.Result = (IntPtr)17; // HTBOTTOMRIGHT
-                    return;
-                }
-            }
-            base.WndProc(ref m);
+
         }
+
+        protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+        {
+            //base.OnRenderToolStripBorder(e);
+        }
+
     }
 }
