@@ -1,80 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
-using OpenQA.Selenium.Remote;
-using HtmlAgilityPack;
 using System.IO;
-using System.Net;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Threading;
 
 namespace Otaku_Time
 {
-
     public partial class SingleLoadedAnime : UserControl
     {
-        public string AnimeURL = "";
-        private PhantomJSDriver PhantomObject;
-        private PlayVideo PV;
-        private DownloadingEpisodes DE;
-        private string path = "";
+        public string AnimeUrl = "";
+        private readonly PhantomJSDriver _phantomObject;
+        private PlayVideo _pv;
+        private readonly DownloadingEpisodes _de;
+        private string _path = "";
 
-        private InfoFrm InfoFrm;
+        private InfoFrm _infoFrm;
 
         public SingleLoadedAnime()
         {
-            if (this.DesignMode == false)
+            _tryCount = 0;
+            if (DesignMode == false)
             {
                 InitializeComponent();
-                PhantomObject = WebDriverClass.GetPhantomJSInstance();
-                DE = DownloadingEpisodes.GetMe();
+                _phantomObject = WebDriverClass.PhantomJSInstance;
+                _de = DownloadingEpisodes.GetMe();
             }
         }
 
-        public void loadAnimeList(string URL, bool NeedSynopsis = false)
+        public void LoadAnimeList(bool needSynopsis = false)
         {
-            int width = AnimeEpisodeList.Width;
-            loadCleanSynopsis();
+            var width = AnimeEpisodeList.Width;
+            AnimeSynopsis.Text =  CleanSynopsis(AnimeSynopsis.Text);
 
-            PhantomObject.Navigate().GoToUrl(AnimeURL);
-            if (NeedSynopsis)
+            _phantomObject.Navigate().GoToUrl(AnimeUrl);
+            if (needSynopsis)
             {
-                AnimeSynopsis.Text = PhantomObject.FindElementsByTagName("p")[2].Text;
-                loadCleanSynopsis();
+                AnimeSynopsis.Text = CleanSynopsis(_phantomObject.FindElementsByTagName("p")[2].Text);
             }
-            var myTable = PhantomObject.FindElementsByClassName("episode");
-            foreach (IWebElement node in myTable)
+            var myTable = _phantomObject.FindElementsByClassName("episode");
+            foreach (var node in myTable)
             {
-                ListViewItem LVI = new ListViewItem();
-                LVI.Text = node.Text.Trim();
-                LVI.Tag = node.GetAttribute("data-value");
-                AnimeEpisodeList.Items.Add(LVI);
+                var lvi = new ListViewItem
+                {
+                    Text = node.Text.Trim (),
+                    Tag = node.GetAttribute ("data-value")
+                };
+                AnimeEpisodeList.Items.Add(lvi);
             }
             AnimeEpisodeList.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
 
             if (AnimeEpisodeList.Columns[0].Width > 261)
             {
-                this.AnimeEpisodeList.Size = new Size(AnimeEpisodeList.Columns[0].Width + 20, AnimeEpisodeList.Height);
+                AnimeEpisodeList.Size = new Size(AnimeEpisodeList.Columns[0].Width + 20, AnimeEpisodeList.Height);
                 width = AnimeEpisodeList.Columns[0].Width - width;
                 Parent.Width += width;
             }
-            this.BringToFront();
+            BringToFront();
         }
 
         /// <summary>
         /// replaces html entities and some BQ stuff.
         /// </summary>
-        private void loadCleanSynopsis()
+        private static string CleanSynopsis(string dirtySynopsis)
         {
-            string newstring = AnimeSynopsis.Text
+            var newstring = dirtySynopsis
               .Replace("<br />", "")
               .Replace("&quot;", "\"")
               .Replace("&ldquo;", "\"")
@@ -83,13 +76,11 @@ namespace Otaku_Time
               .Replace("[i]", "")
               .Replace("[/i]", "");
 
-            if (newstring.LastIndexOf(Environment.NewLine) > 0)
+            if (newstring.LastIndexOf(Environment.NewLine, StringComparison.Ordinal) > 0)
             {
-                newstring = newstring.Substring(0, newstring.LastIndexOf(Environment.NewLine));
+                newstring = newstring.Substring(0, newstring.LastIndexOf(Environment.NewLine, StringComparison.Ordinal));
             }
-            AnimeSynopsis.Text = newstring;
-
-
+            return newstring;
         }
 
         private void CloseThisPanel(object sender, EventArgs e)
@@ -97,188 +88,130 @@ namespace Otaku_Time
             AnimeEpisodeList.Items.Clear();
             AnimeImage.ImageLocation = "";
             AnimeName.Text = "";
-            AnimeURL = "";
+            AnimeUrl = "";
             AnimeSynopsis.Text = "";
-            this.SendToBack();
+            SendToBack();
             ((MainFrm)Parent).MainFrmPanel.BringToFront();
-        }
-
-        public void closeMe()
-        {
-
-            if (this.InvokeRequired)
-            {
-                this.Invoke((MethodInvoker)(() => CloseThisPanel(CloseBox, null)));
-            }
-            else
-            {
-                CloseThisPanel(CloseBox, null);
-            }
         }
 
         private void WatchNowBtn_Click(object sender, EventArgs e)
         {
-            string name = AnimeEpisodeList.SelectedItems[0].Text;
-            string attributeName = AnimeEpisodeList.SelectedItems[0].Tag.ToString();
-            string redirectVideoURL = "";
+            var name = AnimeEpisodeList.SelectedItems[0].Text;
+            var attributeName = AnimeEpisodeList.SelectedItems[0].Tag.ToString();
+            string redirectVideoUrl;
             if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
             {
                 // the so called lewd url is dodgy, but the owner doesn't captcha, so scraping is a bit easier.
-                string animeurlname = PhantomObject.Url.Substring(PhantomObject.Url.LastIndexOf("/") + 1);
-                redirectVideoURL = RunViaDesktop(animeurlname, name, attributeName);
+                var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                redirectVideoUrl = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, name, attributeName);
             }
             else
             {
-                redirectVideoURL = GetGoogleLink(attributeName).Replace("&amp;", "&");
+                redirectVideoUrl = GetGoogleLink(attributeName).Replace("&amp;", "&");
             }
-            if (redirectVideoURL == "no")
+            if (redirectVideoUrl == "no")
             {
                 return;
             }
-            if (PV == null || PV.Player == null)
+            if (_pv == null || _pv.Player == null)
             {
-                CreatePlayerInstance(name, redirectVideoURL);
+                CreatePlayerInstance(name, redirectVideoUrl);
             }
             else
             {
-                if (PV.Player.isPlaying == true)
+                if (_pv.Player.isPlaying)
                 {
-                    MyMessageBox MSB = new MyMessageBox("You're already playing an anime, would you like to queue or watch now?", "Otaku Time", "Queue", "Watch Now");
-                    MSB.Load();
-                    string response = MSB.Response;
+                    var msb = new MyMessageBox("You're already playing an anime, would you like to queue or watch now?", "Otaku Time", "Queue", "Watch Now");
+                    msb.Load();
+                    var response = msb.Response;
 
                     if (response == "Queue")
                     {
-                        PV.addToQueue(name, redirectVideoURL);
+                        _pv.addToQueue(name, redirectVideoUrl);
                     }
                     else if (response == "Watch Now")
                     {
-                        CreatePlayerInstance(name, redirectVideoURL);
+                        CreatePlayerInstance(name, redirectVideoUrl);
                     }
                 }
                 else
                 {
-                    CreatePlayerInstance(name, redirectVideoURL);
+                    CreatePlayerInstance(name, redirectVideoUrl);
                 }
             }
-        }
-
-        /// <summary>
-        /// Scrapes the desktop site for web info. Currently only supports the lewd URL
-        /// </summary>
-        /// <param name="animeurlname"></param>
-        /// <param name="name"></param>
-        /// <param name="attributeName"></param>
-        /// <returns></returns>
-        private string RunViaDesktop(string animeurlname, string name, string attributeName)
-        {
-            string endpoint = $"http://{VariablesClass.KissLewdURL}/Hentai/{animeurlname}/{name.Replace(" ", "-")}?id={attributeName}";
-            string value = "";
-            PhantomObject.Navigate().GoToUrl(endpoint);
-            PhantomObject.ExecuteScript("$('#selectServer').val('openload').change();");
-            Thread.Sleep(1000);
-            var xo = PhantomObject.FindElementsByTagName("a").FirstOrDefault(x => x.Text.Contains("CLICK HERE"));
-            if(xo != null)
-            {
-                value = StaticsClass.GetOpenloadLink(xo.GetAttribute("href"));
-            }
-            PhantomObject.Navigate().GoToUrl(AnimeURL);
-            return value;
         }
 
         private void CreatePlayerInstance(string name, string redirectVideoUrl)
         {
-            PV = new PlayVideo(name, redirectVideoUrl);
-            PV.FormClosing += (s, ev) => PV = null;
-            PV.Show();
+            _pv = new PlayVideo(name, redirectVideoUrl);
+            _pv.FormClosing += (s, ev) => _pv = null;
+            _pv.Show();
         }
 
-        private bool clicked = false;
-        private int tryCount = 0;
+        private bool _clicked;
+        private int _tryCount;
         private string GetGoogleLink(string attributeNumber)
         {
-            tryCount++;
-            if (clicked == false)
+            _tryCount++;
+            if (_clicked == false)
             {
-                PhantomObject.Navigate().Refresh();
-                IWebElement RunTheScript = PhantomObject.FindElementsByClassName("episode").Where(x => x.GetAttribute("data-value") == attributeNumber).First();
-                RunTheScript.Click();
-                clicked = true;
+                _phantomObject.Navigate().Refresh();
+                var runTheScript = _phantomObject.FindElementsByClassName("episode").First(x => x.GetAttribute("data-value") == attributeNumber);
+                runTheScript.Click();
+                _clicked = true;
             }
-            var firstpreval = PhantomObject.FindElementsByTagName("a");
+            var firstpreval = _phantomObject.FindElementsByTagName("a");
             var secondspreval = firstpreval.Where(x => x.Text != "").Select(x => x).ToList();
-            var val = secondspreval.Where(x => x.Text.Contains("mp4")).FirstOrDefault();
-            string AlternativeSourceUrl = "";
+            var val = secondspreval.FirstOrDefault(x => x.Text.Contains("mp4"));
+            var alternativeSourceUrl = "";
             try
             {
-                AlternativeSourceUrl = PhantomObject.FindElementById("mVideo").GetAttribute("src");
+                alternativeSourceUrl = _phantomObject.FindElementById("mVideo").GetAttribute("src");
             }
             catch (Exception) { }
-            if (!string.IsNullOrWhiteSpace(AlternativeSourceUrl))
+            if (!string.IsNullOrWhiteSpace(alternativeSourceUrl))
             {
-                string value = "";
-                if (AlternativeSourceUrl.Contains("openload")) value = StaticsClass.GetOpenloadLink(AlternativeSourceUrl);
-                else if (AlternativeSourceUrl.Contains("rapidvideo")) value = GetRapidVideoLink(AlternativeSourceUrl);
-                else value = AlternativeSourceUrl; // its the google link. weird.
-                PhantomObject.Navigate().GoToUrl(AnimeURL);
-                clicked = false;
+                string value;
+                if (alternativeSourceUrl.Contains("openload"))
+                    value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
+                else if (alternativeSourceUrl.Contains("rapidvideo"))
+                    value = WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                else
+                    value = alternativeSourceUrl; // its the google link. weird.
+                _phantomObject.Navigate().GoToUrl(AnimeUrl);
+                _clicked = false;
                 return value;
             }
             if (val == null)
             {
-                if (tryCount <= 5)
+                if (_tryCount <= 5)
                 {
                     Thread.Sleep(300);
                     return GetGoogleLink(attributeNumber).Replace("&amp;", "&"); ;
                 }
-                else
-                {
-                    MessageBox.Show("Video is unavailable, please try again later.", "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    tryCount = 0;
-                    return "no";
-                }
-
+                MessageBox.Show("Video is unavailable, please try again later.", "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                _tryCount = 0;
+                return "no";
             }
-            tryCount = 0;
-            string retval = val.GetAttribute("href");
-            clicked = false;
+            _tryCount = 0;
+            var retval = val.GetAttribute("href");
+            _clicked = false;
             return retval;
-
-        }
-
-        private string GetRapidVideoLink(string openloadurl)
-        {
-            PhantomObject.Navigate().GoToUrl(openloadurl);
-            string value = "";
-            try
-            {
-                var matches = System.Text.RegularExpressions.Regex.Matches(PhantomObject.PageSource, "\"sources\":(.*),\"logo\"");
-                string JsonVals = matches[0].Groups[1].Value;  // first match, second group.
-                Newtonsoft.Json.Linq.JToken Token = Newtonsoft.Json.Linq.JToken.Parse(JsonVals);
-                List<Newtonsoft.Json.Linq.JToken> VideoTokens = Token.Children().OrderByDescending(x => int.Parse(x.SelectToken("label").ToString().Replace("p", ""))).ToList();
-                value = VideoTokens.First().SelectToken("file").ToString();
-            }
-            catch (Exception)
-            {
-                value = "no";
-            }
-
-            return value;
         }
 
         private async void DownloadBtn_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog FBD = new FolderBrowserDialog();
-            var result = FBD.ShowDialog();
+            var fbd = new FolderBrowserDialog();
+            var result = fbd.ShowDialog();
             if (result != DialogResult.OK)
             {
                 return;
             }
-            path = FBD.SelectedPath;
+            _path = fbd.SelectedPath;
             UseWaitCursor = true;
-            InfoFrm = new InfoFrm();
-            InfoFrm.Show();
-            InfoFrm.BringToFront();
+            _infoFrm = new InfoFrm();
+            _infoFrm.Show();
+            _infoFrm.BringToFront();
             DownloadBtn.Enabled = false;
             WatchNowBtn.Enabled = false;
             await Task.Run((Action)DownloadAnime);
@@ -289,63 +222,61 @@ namespace Otaku_Time
 
         private void DownloadAnime()
         {
-            Dictionary<string, string> Vals = new Dictionary<string, string>();
+            var vals = new Dictionary<string, string>();
             if (AnimeEpisodeList.InvokeRequired)
             {
-                this.Invoke((MethodInvoker)(() => { AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
+                Invoke((MethodInvoker)(() => { AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             }
             else
             {
-                AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => Vals.Add(x.Text, x.Tag.ToString()));
+                AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString()));
                 CloseBox.Enabled = false;
             }
-            foreach (KeyValuePair<string, string> KeyValPair in Vals)
+            foreach (var keyValPair in vals)
             {
-                string episodeName = GetSafeFilename(KeyValPair.Key);
-                InfoFrm.Invoke((MethodInvoker)(() =>
+                var episodeName = GetSafeFilename(keyValPair.Key);
+                _infoFrm.Invoke((MethodInvoker)(() =>
                 {
-                    InfoFrm.textBox1.Text = "Downloading: " + episodeName;
-                    InfoFrm.textBox1.Refresh();
+                    _infoFrm.textBox1.Text = "Downloading: " + episodeName;
+                    _infoFrm.textBox1.Refresh();
                 }));
-                string episodeURL = KeyValPair.Value;
-                string directoryPath = path + @"\" + GetSafeFilename(AnimeName.Text);
+                var episodeUrl = keyValPair.Value;
+                var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
                 Directory.CreateDirectory(directoryPath);
-                string redirectorLink = "";
+                string redirectorLink;
                 if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
                 {
-                    string animeurlname = PhantomObject.Url.Substring(PhantomObject.Url.LastIndexOf("/") + 1);
-                    redirectorLink = RunViaDesktop(animeurlname, episodeName, episodeURL);
+                    var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                    redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
                 }
                 else
                 {
-                    redirectorLink = GetGoogleLink(episodeURL).Replace("&amp;", "&");
+                    redirectorLink = GetGoogleLink(episodeUrl).Replace("&amp;", "&");
                 }
                  
                 if (redirectorLink != "no")
                 {
-                    this.Invoke((MethodInvoker)(() => DE.addDownload(redirectorLink, episodeName, directoryPath)));
+                    Invoke((MethodInvoker)(() => _de.addDownload(redirectorLink, episodeName, directoryPath)));
                 }
             }
-            if (this.InvokeRequired)
+            if (InvokeRequired)
             {
-                this.Invoke((MethodInvoker)(() =>
+                Invoke((MethodInvoker)(() =>
                 {
                     CloseBox.Enabled = true;
-                    InfoFrm.Close();
+                    _infoFrm.Close();
                 }));
             }
             else
             {
                 CloseBox.Enabled = true;
-                InfoFrm.Close();
+                _infoFrm.Close();
             }
         }
 
-        private string GetSafeFilename(string filename)
+        private static string GetSafeFilename(string filename)
         {
-
             return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
-
         }
     }
 }

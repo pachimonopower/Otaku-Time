@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Otaku_Time;
 
@@ -10,18 +11,18 @@ namespace OtakuTimeTests
         [TestMethod]
         public void GetPhantomObjectTest()
         {
-            var PhantomObject = WebDriverClass.GetPhantomJSInstance();
-            Assert.AreNotEqual(null, PhantomObject);
+            var phantomObject = WebDriverClass.PhantomJSInstance;
+            Assert.AreNotEqual(null, phantomObject);
         }
 
         [TestMethod]
         public void ConnectToMasterTest()
         {
-            var PhantomObject = WebDriverClass.GetPhantomJSInstance();
-            PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
-            System.Threading.Thread.Sleep(6000); //bypass cloudflare
-            Assert.IsTrue(PhantomObject.Url.Contains(VariablesClass.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
-            PhantomObject.Quit();
+            var phantomObject = WebDriverClass.PhantomJSInstance;
+            phantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
+            Thread.Sleep(6000); //bypass cloudflare
+            Assert.IsTrue(phantomObject.Url.Contains(VariablesClass.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
+            phantomObject.Quit();
         }
     }
 }

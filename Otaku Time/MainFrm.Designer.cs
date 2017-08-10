@@ -175,7 +175,7 @@
             this.AnimeSearchQuery.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.AnimeSearchQuery.Size = new System.Drawing.Size(132, 27);
             this.AnimeSearchQuery.Visible = false;
-            this.AnimeSearchQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchAnime);
+            this.AnimeSearchQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SearchAnime);
             // 
             // toolStripButton1
             // 

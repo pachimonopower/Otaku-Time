@@ -8,76 +8,75 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Threading;
 using OpenQA.Selenium.PhantomJS;
 
 namespace Otaku_Time
 {
     public partial class SplashFrm : Form
     {
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
 
         [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        private static extern int SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
+        private static extern bool ReleaseCapture();
 
 
-        private PhantomJSDriver PhantomObject;
-        private int counter = 0;
-        private MainFrm MainFrm = new MainFrm();
-
+        private readonly PhantomJSDriver _phantomObject;
+        private int _counter;
+        private readonly MainFrm _mainFrm = new MainFrm();
 
         public SplashFrm()
         {
             InitializeComponent();
             DecoratorClass.GoThroughDecorate(this);
-            PhantomObject = WebDriverClass.GetPhantomJSInstance();
+            _phantomObject = WebDriverClass.PhantomJSInstance;
         }
 
         private async void SplashFrm_Load(object sender, EventArgs e)
         {
             await Task.Run(() =>
             {
-                PhantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
+                _phantomObject.Navigate().GoToUrl($"http://{VariablesClass.MasterURL}/M");
                 DoAuth();
             });
             await Task.Run(() =>
             {
-                StaticsClass.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Loading new titles!");
-                StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
-                MainFrm.LoadMainScreen();
+                StaticsClass.InvokeIfRequired(WhatDoing, () => WhatDoing.Text = "Loading new titles!");
+                StaticsClass.InvokeIfRequired(Progress, Progress.PerformStep);
+                _mainFrm.LoadMainScreen();
             });
-            StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
-            MainFrm.Show();
-            this.Hide();
+            StaticsClass.InvokeIfRequired(Progress, Progress.PerformStep);
+            _mainFrm.Show();
+            Hide();
         }
 
         private void DoAuth()
         {
-            string TitleText = "";
-            switch(VariablesClass.MasterURL)
+            var titleText = "";
+            switch (VariablesClass.MasterURL)
             {
                 case VariablesClass.KissAnimeURL:
-                    TitleText = "Please wait 5 seconds";
+                    titleText = "Please wait 5 seconds";
                     break;
                 case VariablesClass.KissLewdURL:
-                    TitleText = "Just a moment";
+                    titleText = "Just a moment";
                     break;
                 case VariablesClass.KissCartoonURL:
 
                     break;
             }
-            if (PhantomObject.Title.Contains(TitleText))
+            while (_phantomObject.Title.Contains(titleText))
             {
-                StaticsClass.InvokeIfRequired(this.WhatDoing, () => this.WhatDoing.Text = "Gaining authentication from server.");
-                if (counter != 4)
+                StaticsClass.InvokeIfRequired(WhatDoing, () => WhatDoing.Text = "Gaining authentication from server.");
+                if (_counter != 4)
                 {
-                    StaticsClass.InvokeIfRequired(this.Progress, this.Progress.PerformStep);
-                    counter++;
+                    StaticsClass.InvokeIfRequired(Progress, Progress.PerformStep);
+                    _counter++;
                 }
-                System.Threading.Thread.Sleep(2000);
-                DoAuth();
+                Thread.Sleep(2000);
             }
         }
 
