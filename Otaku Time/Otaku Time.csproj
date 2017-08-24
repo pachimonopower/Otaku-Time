@@ -88,6 +88,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="MyAnimeListWrapper">
+      <HintPath>..\..\MyAnimeListWrapper\MyAnimeListWrapper\bin\Debug\netstandard1.2\MyAnimeListWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -137,6 +140,12 @@
     <Compile Include="InfoFrm.Designer.cs">
       <DependentUpon>InfoFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyAnimeListLoginFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MyAnimeListLoginFrm.Designer.cs">
+      <DependentUpon>MyAnimeListLoginFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +172,11 @@
     <Compile Include="Controls\SingleLoadedAnime.Designer.cs">
       <DependentUpon>SingleLoadedAnime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SplashFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +199,9 @@
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MyAnimeListLoginFrm.resx">
+      <DependentUpon>MyAnimeListLoginFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyMessageBox.resx">
       <DependentUpon>MyMessageBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,14 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="Controls\SingleLoadedAnime.resx">
       <DependentUpon>SingleLoadedAnime.cs</DependentUpon>
     </EmbeddedResource>
@@ -288,6 +300,7 @@
     <Content Include="Beautiplayer.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\logo-myanme-list.png" />
     <Content Include="Resources\openload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

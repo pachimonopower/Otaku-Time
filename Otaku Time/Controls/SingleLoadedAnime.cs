@@ -7,6 +7,7 @@ using OpenQA.Selenium.PhantomJS;
 using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
+using MyAnimeListWrapper;
 
 namespace Otaku_Time
 {
@@ -197,6 +198,11 @@ namespace Otaku_Time
             var retval = val.GetAttribute("href");
             _clicked = false;
             return retval;
+        }
+
+        public void GetAnimeId()
+        {
+            //TODO
         }
 
         private async void DownloadBtn_Click(object sender, EventArgs e)

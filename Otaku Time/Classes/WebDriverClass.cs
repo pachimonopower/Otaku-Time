@@ -18,7 +18,7 @@ namespace Otaku_Time
             {
                 if (_myPhantomObject == null)
                 {
-                    const string path = @".\Resources"; // used to make the designer work. If you can't access MainFrm designer change this to your phantomjs location.
+                    const string path = @".\Resources\"; // used to make the designer work. If you can't access MainFrm designer change this to your phantomjs location.
                     var driverService = PhantomJSDriverService.CreateDefaultService(path);
                     var options = new PhantomJSOptions();
                     options.AddAdditionalCapability("phantomjs.page.settings.userAgent", VariablesClass.UserAgentString);

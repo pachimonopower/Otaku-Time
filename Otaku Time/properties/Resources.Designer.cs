@@ -153,6 +153,16 @@ namespace Otaku_Time.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logo_myanme_list {
+            get {
+                object obj = ResourceManager.GetObject("logo-myanme-list", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap renge {
             get {
                 object obj = ResourceManager.GetObject("renge", resourceCulture);

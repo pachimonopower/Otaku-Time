@@ -14,6 +14,7 @@ namespace Otaku_Time
 {
     public static class StaticsClass
     {
+        public static MyAnimeListWrapper.MyAnimeListClass MyAnimeListObject = null;
         public static string GetOpenloadLink(string openloadurl)
         {
             string val = "";

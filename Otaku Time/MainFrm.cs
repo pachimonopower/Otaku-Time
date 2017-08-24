@@ -172,6 +172,7 @@ namespace Otaku_Time
             LoadedAnime.AnimeImage.Image = ac.AnimeImage.Image;
             LoadedAnime.AnimeUrl = $"http://{VariablesClass.MasterURL}" + ac.AnimeInfo.AnimeSeriesURL;
             LoadedAnime.LoadAnimeList(true);
+            LoadedAnime.GetAnimeId();
             MainFrmPanel.SendToBack();
         }
 
@@ -225,6 +226,18 @@ namespace Otaku_Time
             }
             WebDriverClass.PhantomJSInstance.Quit();
             Application.Exit();
+        }
+
+        private void LoginToMalBtn_Click(object sender, EventArgs e)
+        {
+            if(StaticsClass.MyAnimeListObject != null)
+            {
+                return; //dont allow to relog in atm :)
+            }
+            var loginfrm = new MyAnimeListLoginFrm();
+            loginfrm.LoginSuccess += () => LoginToMalBtn.Text = "Welcome, " + StaticsClass.MyAnimeListObject.Username;
+            loginfrm.Show();
+            loginfrm.BringToFront();
         }
     }
 

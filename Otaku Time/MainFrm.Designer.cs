@@ -40,6 +40,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.ShowDownloads = new System.Windows.Forms.ToolStripButton();
             this.GoHome = new System.Windows.Forms.ToolStripButton();
+            this.LoginToMalBtn = new System.Windows.Forms.ToolStripLabel();
             this.MainFrmPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.AboutInfo = new System.Windows.Forms.Panel();
             this.VersionTxt = new System.Windows.Forms.TextBox();
@@ -143,7 +144,8 @@
             this.AnimeSearchQuery,
             this.toolStripButton1,
             this.ShowDownloads,
-            this.GoHome});
+            this.GoHome,
+            this.LoginToMalBtn});
             this.MenuStrip.Location = new System.Drawing.Point(0, 31);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -162,7 +164,7 @@
             this.InfoBtrn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.InfoBtrn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.InfoBtrn.Name = "InfoBtrn";
-            this.InfoBtrn.Size = new System.Drawing.Size(28, 28);
+            this.InfoBtrn.Size = new System.Drawing.Size(28, 30);
             this.InfoBtrn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.InfoBtrn.ToolTipText = "About";
             this.InfoBtrn.Click += new System.EventHandler(this.InfoBtrn_Click);
@@ -187,7 +189,7 @@
             this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 30);
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton1.ToolTipText = "Search";
             this.toolStripButton1.Click += new System.EventHandler(this.ShowSearch_Click);
@@ -202,7 +204,7 @@
             this.ShowDownloads.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.ShowDownloads.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ShowDownloads.Name = "ShowDownloads";
-            this.ShowDownloads.Size = new System.Drawing.Size(28, 28);
+            this.ShowDownloads.Size = new System.Drawing.Size(28, 30);
             this.ShowDownloads.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ShowDownloads.ToolTipText = "Downloads";
             this.ShowDownloads.Click += new System.EventHandler(this.ShowDownloads_Click);
@@ -217,10 +219,19 @@
             this.GoHome.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.GoHome.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GoHome.Name = "GoHome";
-            this.GoHome.Size = new System.Drawing.Size(28, 28);
+            this.GoHome.Size = new System.Drawing.Size(28, 30);
             this.GoHome.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.GoHome.ToolTipText = "Home";
             this.GoHome.Click += new System.EventHandler(this.GoHome_Click);
+            // 
+            // LoginToMalBtn
+            // 
+            this.LoginToMalBtn.ActiveLinkColor = System.Drawing.Color.White;
+            this.LoginToMalBtn.ForeColor = System.Drawing.Color.White;
+            this.LoginToMalBtn.Name = "LoginToMalBtn";
+            this.LoginToMalBtn.Size = new System.Drawing.Size(155, 30);
+            this.LoginToMalBtn.Text = "Login To MyAnimeList";
+            this.LoginToMalBtn.Click += new System.EventHandler(this.LoginToMalBtn_Click);
             // 
             // MainFrmPanel
             // 
@@ -377,6 +388,7 @@
         private System.Windows.Forms.Panel AboutInfo;
         private System.Windows.Forms.TextBox VersionTxt;
         private System.Windows.Forms.ToolStripLabel ProgramText;
+        private System.Windows.Forms.ToolStripLabel LoginToMalBtn;
     }
 }
 
