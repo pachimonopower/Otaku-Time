@@ -18,7 +18,7 @@ namespace Otaku_Time
         public static string GetOpenloadLink(string openloadurl)
         {
             string val = "";
-            string args = "/c .\\PhantomJS.exe .\\Resources\\openload.js " + openloadurl;
+            string args = "/c .\\Resources\\PhantomJS.exe .\\Resources\\openload.js " + openloadurl;
             var startinfo = new ProcessStartInfo()
             {
                 RedirectStandardOutput = true,

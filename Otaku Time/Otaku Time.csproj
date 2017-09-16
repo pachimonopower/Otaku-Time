@@ -122,6 +122,18 @@
       <DependentUpon>AnimeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\AnimeInfoClass.cs" />
+    <Compile Include="Controls\EpisodeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EpisodeControl.Designer.cs">
+      <DependentUpon>EpisodeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RateAnimeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RateAnimeControl.Designer.cs">
+      <DependentUpon>RateAnimeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DownloadingEpisodes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +198,12 @@
     <Compile Include="Classes\StaticsClass.cs" />
     <EmbeddedResource Include="Controls\AnimeControl.resx">
       <DependentUpon>AnimeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\EpisodeControl.resx">
+      <DependentUpon>EpisodeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RateAnimeControl.resx">
+      <DependentUpon>RateAnimeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DownloadingEpisodes.resx">
       <DependentUpon>DownloadingEpisodes.cs</DependentUpon>
@@ -301,6 +319,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\logo-myanme-list.png" />
+    <None Include="Resources\keditbookmarks.png" />
     <Content Include="Resources\openload.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

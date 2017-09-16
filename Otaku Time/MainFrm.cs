@@ -165,14 +165,17 @@ namespace Otaku_Time
 
         }
 
-        private void StartLoadingAnimeInformation(AnimeControl ac)
+        private async void StartLoadingAnimeInformation(AnimeControl ac)
         {
             LoadedAnime.AnimeName.Text = ac.AnimeName.Text;
             LoadedAnime.AnimeSynopsis.Text = ac.AnimeInfo.AnimeSeriesSynopsis;
             LoadedAnime.AnimeImage.Image = ac.AnimeImage.Image;
             LoadedAnime.AnimeUrl = $"http://{VariablesClass.MasterURL}" + ac.AnimeInfo.AnimeSeriesURL;
             LoadedAnime.LoadAnimeList(true);
-            LoadedAnime.GetAnimeId();
+            if(StaticsClass.MyAnimeListObject != null)
+            {
+                await LoadedAnime.GetAnimeId();
+            }
             MainFrmPanel.SendToBack();
         }
 

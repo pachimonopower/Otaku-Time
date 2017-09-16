@@ -33,8 +33,7 @@
             this.AnimeImage = new System.Windows.Forms.PictureBox();
             this.AnimeName = new System.Windows.Forms.Label();
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
-            this.AnimeEpisodeList = new System.Windows.Forms.ListView();
-            this.EpisodeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.EpisodesFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.DownloadBtn = new System.Windows.Forms.Button();
             this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
@@ -115,7 +114,7 @@
             this.AnimeEpisodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AnimeEpisodes.Controls.Add(this.AnimeEpisodeList);
+            this.AnimeEpisodes.Controls.Add(this.EpisodesFlowPanel);
             this.AnimeEpisodes.Controls.Add(this.DownloadBtn);
             this.AnimeEpisodes.Controls.Add(this.WatchNowBtn);
             this.AnimeEpisodes.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -129,28 +128,16 @@
             this.AnimeEpisodes.TabStop = false;
             this.AnimeEpisodes.Text = "Episodes";
             // 
-            // AnimeEpisodeList
+            // EpisodesFlowPanel
             // 
-            this.AnimeEpisodeList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.EpisodesFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AnimeEpisodeList.BackColor = System.Drawing.Color.White;
-            this.AnimeEpisodeList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.EpisodeColumnHeader});
-            this.AnimeEpisodeList.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.AnimeEpisodeList.Location = new System.Drawing.Point(4, 29);
-            this.AnimeEpisodeList.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
-            this.AnimeEpisodeList.Name = "AnimeEpisodeList";
-            this.AnimeEpisodeList.Size = new System.Drawing.Size(354, 415);
-            this.AnimeEpisodeList.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.AnimeEpisodeList.TabIndex = 8;
-            this.AnimeEpisodeList.UseCompatibleStateImageBehavior = false;
-            this.AnimeEpisodeList.View = System.Windows.Forms.View.Details;
-            // 
-            // EpisodeColumnHeader
-            // 
-            this.EpisodeColumnHeader.Text = "Episodes";
-            this.EpisodeColumnHeader.Width = 251;
+            this.EpisodesFlowPanel.AutoScroll = true;
+            this.EpisodesFlowPanel.Location = new System.Drawing.Point(4, 33);
+            this.EpisodesFlowPanel.Name = "EpisodesFlowPanel";
+            this.EpisodesFlowPanel.Size = new System.Drawing.Size(355, 411);
+            this.EpisodesFlowPanel.TabIndex = 2;
             // 
             // DownloadBtn
             // 
@@ -220,6 +207,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SingleLoadedAnime";
             this.Size = new System.Drawing.Size(1299, 533);
+            this.Load += new System.EventHandler(this.SingleLoadedAnime_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).EndInit();
@@ -242,9 +230,8 @@
         public System.Windows.Forms.TextBox AnimeSynopsis;
         public System.Windows.Forms.PictureBox AnimeImage;
         public System.Windows.Forms.Label AnimeName;
-        public System.Windows.Forms.ListView AnimeEpisodeList;
-        private System.Windows.Forms.ColumnHeader EpisodeColumnHeader;
         private System.Windows.Forms.PictureBox CloseBox;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.FlowLayoutPanel EpisodesFlowPanel;
     }
 }

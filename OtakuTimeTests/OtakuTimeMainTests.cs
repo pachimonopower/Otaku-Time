@@ -24,5 +24,13 @@ namespace OtakuTimeTests
             Assert.IsTrue(phantomObject.Url.Contains(VariablesClass.MasterURL)); // test to make sure it goes through. AppVeyor is banned apparently.
             phantomObject.Quit();
         }
+
+        [TestMethod]
+        public void GetRapidVideoLink()
+        {
+            string rapidvideourl = WebDriverClass.GetRapidVideoLink("https://www.rapidvideo.com/e/FF97ATLLGB");
+            Assert.AreNotEqual("no", rapidvideourl);
+        }
+
     }
 }

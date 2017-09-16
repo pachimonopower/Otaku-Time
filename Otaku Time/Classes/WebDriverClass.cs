@@ -68,11 +68,9 @@ namespace Otaku_Time
             string value;
             try
             {
-                var matches = System.Text.RegularExpressions.Regex.Matches(PhantomJSInstance.PageSource, "\"sources\":(.*),\"logo\"");
+                var matches = System.Text.RegularExpressions.Regex.Matches(PhantomJSInstance.PageSource, @"<source src\s*=\s*""(.+?)""");
                 var jsonVals = matches[0].Groups[1].Value;  // first match, second group.
-                var token = Newtonsoft.Json.Linq.JToken.Parse(jsonVals);
-                var videoTokens = token.Children().OrderByDescending(x => int.Parse(x.SelectToken("label").ToString().Replace("p", ""))).ToList();
-                value = videoTokens.First().SelectToken("file").ToString();
+                value = jsonVals;
             }
             catch (Exception)
             {

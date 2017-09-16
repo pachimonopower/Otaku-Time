@@ -18,6 +18,7 @@ namespace Otaku_Time
         private PlayVideo _pv;
         private readonly DownloadingEpisodes _de;
         private string _path = "";
+        private MyAnimeListAnimeInfoClass _AnimeObject;
 
         private InfoFrm _infoFrm;
 
@@ -34,7 +35,8 @@ namespace Otaku_Time
 
         public void LoadAnimeList(bool needSynopsis = false)
         {
-            var width = AnimeEpisodeList.Width;
+            var width = EpisodesFlowPanel.Width;
+            EpisodesFlowPanel.Controls.Clear();
             AnimeSynopsis.Text =  CleanSynopsis(AnimeSynopsis.Text);
 
             _phantomObject.Navigate().GoToUrl(AnimeUrl);
@@ -45,22 +47,41 @@ namespace Otaku_Time
             var myTable = _phantomObject.FindElementsByClassName("episode");
             foreach (var node in myTable)
             {
-                var lvi = new ListViewItem
+                var epcontrol = new EpisodeControl
                 {
-                    Text = node.Text.Trim (),
-                    Tag = node.GetAttribute ("data-value")
+                    Text = node.Text.Trim(),
+                    Tag = node.GetAttribute("data-value")
                 };
-                AnimeEpisodeList.Items.Add(lvi);
-            }
-            AnimeEpisodeList.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-
-            if (AnimeEpisodeList.Columns[0].Width > 261)
-            {
-                AnimeEpisodeList.Size = new Size(AnimeEpisodeList.Columns[0].Width + 20, AnimeEpisodeList.Height);
-                width = AnimeEpisodeList.Columns[0].Width - width;
-                Parent.Width += width;
+                if (StaticsClass.MyAnimeListObject != null)
+                {
+                    epcontrol.RateIcon.Click += RateIcon_Click;
+                }
+                else
+                {
+                    epcontrol.RateIcon.Visible = false;
+                }
+                EpisodesFlowPanel.Controls.Add(epcontrol);
+                EpisodesFlowPanel.Controls.SetChildIndex(epcontrol, 0);
             }
             BringToFront();
+        }
+
+        private void RateIcon_Click(object sender, EventArgs e)
+        {
+            int.TryParse(((EpisodeControl)((PictureBox)sender).Parent).Text.ToLower().Replace("episode", "").Trim(), out int EpisodeNumber);
+            RateAnimeControl RateAnimeCtrl = new RateAnimeControl(EpisodeNumber);
+            Point CtrlLocation = ((PictureBox)sender).Parent.PointToScreen(Point.Empty);
+            RateAnimeCtrl.Location = new Point(CtrlLocation.X, 50);
+            this.Controls.Add(RateAnimeCtrl);
+            RateAnimeCtrl.BringToFront();
+            RateAnimeCtrl.SaveRecord += RateAnimeCtrl_SaveRecord;
+        }
+
+        private async void RateAnimeCtrl_SaveRecord(RateAnimeControl RateControl, MyAnimeListAnimeValuesClass MalValues)
+        {
+            await StaticsClass.MyAnimeListObject.AddAnime(_AnimeObject.Id, MalValues);
+            RateControl.Dispose();
+
         }
 
         /// <summary>
@@ -86,7 +107,7 @@ namespace Otaku_Time
 
         private void CloseThisPanel(object sender, EventArgs e)
         {
-            AnimeEpisodeList.Items.Clear();
+            EpisodesFlowPanel.Controls.Clear();
             AnimeImage.ImageLocation = "";
             AnimeName.Text = "";
             AnimeUrl = "";
@@ -97,8 +118,13 @@ namespace Otaku_Time
 
         private void WatchNowBtn_Click(object sender, EventArgs e)
         {
-            var name = AnimeEpisodeList.SelectedItems[0].Text;
-            var attributeName = AnimeEpisodeList.SelectedItems[0].Tag.ToString();
+            var SelectedControls = EpisodesFlowPanel.Controls.Cast<EpisodeControl>().Where(x => x.Checked).ToArray();
+            if(SelectedControls.Count() == 0)
+            {
+                return;
+            }
+            var name = SelectedControls[0].Text;
+            var attributeName = SelectedControls[0].Tag.ToString();
             string redirectVideoUrl;
             if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
             {
@@ -200,9 +226,16 @@ namespace Otaku_Time
             return retval;
         }
 
-        public void GetAnimeId()
+        public async Task GetAnimeId()
         {
-            //TODO
+            if(StaticsClass.MyAnimeListObject != null)
+            {
+                var AnimeEpisodes = await StaticsClass.MyAnimeListObject.SearchAnime(AnimeName.Text);
+                if(AnimeEpisodes.Count > 0)
+                {
+                    _AnimeObject = AnimeEpisodes.First(); //Should work fine due to text matching :D
+                }
+            }
         }
 
         private async void DownloadBtn_Click(object sender, EventArgs e)
@@ -229,15 +262,7 @@ namespace Otaku_Time
         private void DownloadAnime()
         {
             var vals = new Dictionary<string, string>();
-            if (AnimeEpisodeList.InvokeRequired)
-            {
-                Invoke((MethodInvoker)(() => { AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
-            }
-            else
-            {
-                AnimeEpisodeList.SelectedItems.Cast<ListViewItem>().ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString()));
-                CloseBox.Enabled = false;
-            }
+            StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             foreach (var keyValPair in vals)
             {
                 var episodeName = GetSafeFilename(keyValPair.Key);
@@ -283,6 +308,11 @@ namespace Otaku_Time
         private static string GetSafeFilename(string filename)
         {
             return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
+        }
+
+        private void SingleLoadedAnime_Load(object sender, EventArgs e)
+        {
+            DecoratorClass.GoThroughDecorate(this);
         }
     }
 }
