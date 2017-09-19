@@ -72,8 +72,9 @@ namespace Otaku_Time
                 var jsonVals = matches[0].Groups[1].Value;  // first match, second group.
                 value = jsonVals;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 value = "no";
             }
             return value;
