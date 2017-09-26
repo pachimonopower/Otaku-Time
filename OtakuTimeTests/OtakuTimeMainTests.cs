@@ -25,7 +25,7 @@ namespace OtakuTimeTests
             phantomObject.Quit();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("AppVeyorDontRun")]
         public void GetRapidVideoLink()
         {
             string rapidvideourl = WebDriverClass.GetRapidVideoLink("https://www.rapidvideo.com/e/FF97ATLLGB");
