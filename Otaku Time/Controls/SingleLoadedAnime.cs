@@ -116,7 +116,7 @@ namespace Otaku_Time
             ((MainFrm)Parent).MainFrmPanel.BringToFront();
         }
 
-        private void WatchNowBtn_Click(object sender, EventArgs e)
+        private async void WatchNowBtn_Click(object sender, EventArgs e)
         {
             var SelectedControls = EpisodesFlowPanel.Controls.Cast<EpisodeControl>().Where(x => x.Checked).ToArray();
             if(SelectedControls.Count() == 0)
@@ -134,10 +134,11 @@ namespace Otaku_Time
             }
             else
             {
-                redirectVideoUrl = GetGoogleLink(attributeName).Replace("&amp;", "&");
+                redirectVideoUrl = (await GetGoogleLink(attributeName)).Replace("&amp;", "&");
             }
             if (redirectVideoUrl == "no")
             {
+                MessageBox.Show("Error getting stream URL. Please Try Again.");
                 return;
             }
             if (_pv == null || _pv.Player == null)
@@ -177,7 +178,7 @@ namespace Otaku_Time
 
         private bool _clicked;
         private int _tryCount;
-        private string GetGoogleLink(string attributeNumber)
+        private async Task<string> GetGoogleLink(string attributeNumber)
         {
             _tryCount++;
             if (_clicked == false)
@@ -202,7 +203,7 @@ namespace Otaku_Time
                 if (alternativeSourceUrl.Contains("openload"))
                     value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
                 else if (alternativeSourceUrl.Contains("rapidvideo"))
-                    value = WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                    value = await WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
                 else
                     value = alternativeSourceUrl; // its the google link. weird.
                 _phantomObject.Navigate().GoToUrl(AnimeUrl);
@@ -213,8 +214,8 @@ namespace Otaku_Time
             {
                 if (_tryCount <= 5)
                 {
-                    Thread.Sleep(300);
-                    return GetGoogleLink(attributeNumber).Replace("&amp;", "&"); ;
+                    await Task.Delay(300);
+                    return (await GetGoogleLink(attributeNumber)).Replace("&amp;", "&"); ;
                 }
                 MessageBox.Show("Video is unavailable, please try again later.", "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 _tryCount = 0;
@@ -259,7 +260,7 @@ namespace Otaku_Time
             UseWaitCursor = false;
         }
 
-        private void DownloadAnime()
+        private async void DownloadAnime()
         {
             var vals = new Dictionary<string, string>();
             StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
@@ -282,7 +283,7 @@ namespace Otaku_Time
                 }
                 else
                 {
-                    redirectorLink = GetGoogleLink(episodeUrl).Replace("&amp;", "&");
+                    redirectorLink = (await GetGoogleLink(episodeUrl)).Replace("&amp;", "&");
                 }
                  
                 if (redirectorLink != "no")
@@ -313,6 +314,7 @@ namespace Otaku_Time
         private void SingleLoadedAnime_Load(object sender, EventArgs e)
         {
             DecoratorClass.GoThroughDecorate(this);
+            AnimeSynopsis.BackColor = DownloadBtn.BackColor; //for some reason doesn't paint correctly.
         }
     }
 }

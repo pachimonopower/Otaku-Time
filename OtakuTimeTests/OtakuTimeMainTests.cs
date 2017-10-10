@@ -26,9 +26,9 @@ namespace OtakuTimeTests
         }
 
         [TestMethod]
-        public void GetRapidVideoLink()
+        public async void GetRapidVideoLink()
         {
-            string rapidvideourl = WebDriverClass.GetRapidVideoLink("https://www.rapidvideo.com/e/FF97ATLLGB");
+            string rapidvideourl = await WebDriverClass.GetRapidVideoLink("https://www.rapidvideo.com/e/FF97ATLLGB");
             Assert.AreNotEqual("no", rapidvideourl);
         }
 

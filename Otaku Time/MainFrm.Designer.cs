@@ -149,7 +149,7 @@
             this.MenuStrip.Location = new System.Drawing.Point(0, 31);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.MenuStrip.Size = new System.Drawing.Size(1299, 33);
+            this.MenuStrip.Size = new System.Drawing.Size(1299, 31);
             this.MenuStrip.TabIndex = 1;
             this.MenuStrip.Text = "toolStrip2";
             this.MenuStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
@@ -164,7 +164,7 @@
             this.InfoBtrn.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.InfoBtrn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.InfoBtrn.Name = "InfoBtrn";
-            this.InfoBtrn.Size = new System.Drawing.Size(28, 30);
+            this.InfoBtrn.Size = new System.Drawing.Size(28, 28);
             this.InfoBtrn.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.InfoBtrn.ToolTipText = "About";
             this.InfoBtrn.Click += new System.EventHandler(this.InfoBtrn_Click);
@@ -189,7 +189,7 @@
             this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(28, 30);
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
             this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.toolStripButton1.ToolTipText = "Search";
             this.toolStripButton1.Click += new System.EventHandler(this.ShowSearch_Click);
@@ -204,7 +204,7 @@
             this.ShowDownloads.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.ShowDownloads.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ShowDownloads.Name = "ShowDownloads";
-            this.ShowDownloads.Size = new System.Drawing.Size(28, 30);
+            this.ShowDownloads.Size = new System.Drawing.Size(28, 28);
             this.ShowDownloads.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.ShowDownloads.ToolTipText = "Downloads";
             this.ShowDownloads.Click += new System.EventHandler(this.ShowDownloads_Click);
@@ -219,7 +219,7 @@
             this.GoHome.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.GoHome.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GoHome.Name = "GoHome";
-            this.GoHome.Size = new System.Drawing.Size(28, 30);
+            this.GoHome.Size = new System.Drawing.Size(28, 28);
             this.GoHome.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.GoHome.ToolTipText = "Home";
             this.GoHome.Click += new System.EventHandler(this.GoHome_Click);
@@ -229,7 +229,7 @@
             this.LoginToMalBtn.ActiveLinkColor = System.Drawing.Color.White;
             this.LoginToMalBtn.ForeColor = System.Drawing.Color.White;
             this.LoginToMalBtn.Name = "LoginToMalBtn";
-            this.LoginToMalBtn.Size = new System.Drawing.Size(155, 30);
+            this.LoginToMalBtn.Size = new System.Drawing.Size(155, 28);
             this.LoginToMalBtn.Text = "Login To MyAnimeList";
             this.LoginToMalBtn.Click += new System.EventHandler(this.LoginToMalBtn_Click);
             // 
@@ -238,11 +238,10 @@
             this.MainFrmPanel.AutoScroll = true;
             this.MainFrmPanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.MainFrmPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainFrmPanel.Location = new System.Drawing.Point(0, 64);
-            this.MainFrmPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.MainFrmPanel.Location = new System.Drawing.Point(0, 62);
+            this.MainFrmPanel.Margin = new System.Windows.Forms.Padding(0);
             this.MainFrmPanel.Name = "MainFrmPanel";
-            this.MainFrmPanel.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.MainFrmPanel.Size = new System.Drawing.Size(1299, 545);
+            this.MainFrmPanel.Size = new System.Drawing.Size(1299, 547);
             this.MainFrmPanel.TabIndex = 2;
             // 
             // AboutInfo
@@ -254,10 +253,10 @@
             this.AboutInfo.Controls.Add(this.pictureBox2);
             this.AboutInfo.Controls.Add(this.pictureBox1);
             this.AboutInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AboutInfo.Location = new System.Drawing.Point(0, 64);
+            this.AboutInfo.Location = new System.Drawing.Point(0, 62);
             this.AboutInfo.Margin = new System.Windows.Forms.Padding(4);
             this.AboutInfo.Name = "AboutInfo";
-            this.AboutInfo.Size = new System.Drawing.Size(1299, 545);
+            this.AboutInfo.Size = new System.Drawing.Size(1299, 547);
             this.AboutInfo.TabIndex = 4;
             // 
             // VersionTxt
@@ -327,12 +326,12 @@
             // 
             // LoadedAnime
             // 
-            this.LoadedAnime.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.LoadedAnime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.LoadedAnime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoadedAnime.Location = new System.Drawing.Point(0, 64);
+            this.LoadedAnime.Location = new System.Drawing.Point(0, 62);
             this.LoadedAnime.Margin = new System.Windows.Forms.Padding(0);
             this.LoadedAnime.Name = "LoadedAnime";
-            this.LoadedAnime.Size = new System.Drawing.Size(1299, 545);
+            this.LoadedAnime.Size = new System.Drawing.Size(1299, 547);
             this.LoadedAnime.TabIndex = 4;
             // 
             // MainFrm

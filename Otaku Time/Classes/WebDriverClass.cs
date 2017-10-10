@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using OpenQA.Selenium;
+using System.Threading.Tasks;
 
 namespace Otaku_Time
 {
@@ -62,9 +63,14 @@ namespace Otaku_Time
             PhantomJSInstance.Navigate().GoToUrl(animeUrl);
             return value;
         }
-        public static string GetRapidVideoLink(string rapidVideoUrl)
+        public static async Task<string> GetRapidVideoLink(string rapidVideoUrl)
         {
             PhantomJSInstance.Navigate().GoToUrl(rapidVideoUrl);
+            do
+            {
+                await Task.Delay(1000);
+            }
+            while (PhantomJSInstance.Title.Contains("Just a moment") || PhantomJSInstance.Title.Contains("www.rapidvideo.com"));
             string value;
             try
             {

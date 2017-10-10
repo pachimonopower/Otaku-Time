@@ -40,6 +40,11 @@ namespace Otaku_Time
         {
             LoadAnime(this);
         }
+
+        private void AnimeControl_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.White, ButtonBorderStyle.Dashed);
+        }
     }
     class CustomWebClient : WebClient
     {

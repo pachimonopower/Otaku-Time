@@ -33,7 +33,7 @@
             this.AnimeImage = new System.Windows.Forms.PictureBox();
             this.AnimeName = new System.Windows.Forms.Label();
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
-            this.EpisodesFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.EpisodesFlowPanel = new FlickerFreePanel();
             this.DownloadBtn = new System.Windows.Forms.Button();
             this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
@@ -232,6 +232,6 @@
         public System.Windows.Forms.Label AnimeName;
         private System.Windows.Forms.PictureBox CloseBox;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.FlowLayoutPanel EpisodesFlowPanel;
+        private FlickerFreePanel EpisodesFlowPanel;
     }
 }

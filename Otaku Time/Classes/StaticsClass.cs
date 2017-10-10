@@ -29,8 +29,8 @@ namespace Otaku_Time
                 FileName = "cmd.exe",
                 UseShellExecute = false
             };
-            Process p = Process.Start(startinfo);            
-            p.WaitForExit();
+            Process p = Process.Start(startinfo);    
+            p.WaitForExit(5000);
             val = p.StandardOutput.ReadToEnd().Replace("/r/n","").Replace("\\r\\n","");
             return val;
         }

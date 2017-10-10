@@ -22,9 +22,9 @@ namespace Otaku_Time
             switch (VariablesClass.MasterURL)
             {
                 case VariablesClass.KissAnimeURL:
-                    return SystemColors.MenuHighlight;
+                    return Color.FromArgb(64,64,64);
                 case VariablesClass.KissLewdURL:
-                    return Color.MediumPurple;
+                    return Color.FromArgb(153, 0, 153);
                 case VariablesClass.KissCartoonURL:
                     return Color.OrangeRed;
                 default:

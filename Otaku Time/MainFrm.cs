@@ -77,6 +77,8 @@ namespace Otaku_Time
             }
             VersionTxt.Text += Application.ProductVersion;
             DecoratorClass.GoThroughDecorate(this);
+            ProgramText.BackColor = MainFrmPanel.BackColor; //doesn't inherit control! 
+
         }
 
         #region Menu Options
@@ -135,6 +137,7 @@ namespace Otaku_Time
                 alIst.Add(animeControl);
             }
             StaticsClass.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(alIst.ToArray()));
+            StaticsClass.InvokeIfRequired(MainFrmPanel, SetFlowMargin);
             StaticsClass.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
         }
 
@@ -182,6 +185,7 @@ namespace Otaku_Time
         private void optionStrip_Resize(object sender, EventArgs e)
         {
             ProgramText.Margin = new Padding(optionStrip.Width / 2 - 40, 1, 0, 2);
+            SetFlowMargin();
         }
 
         private void ShowDownloads_Click(object sender, EventArgs e)
@@ -242,10 +246,32 @@ namespace Otaku_Time
             loginfrm.Show();
             loginfrm.BringToFront();
         }
+
+        private void SetFlowMargin()
+        {
+            using (var ctrl = new AnimeControl())
+            {
+                int TotalControlSize = ctrl.Width + ctrl.Padding.Vertical + ctrl.Margin.Vertical;
+                int TotalPaddingRequired = (MainFrmPanel.Width - (TotalControlSize * (int)Math.Floor((Decimal)MainFrmPanel.Width / TotalControlSize))) / 2;
+                TotalPaddingRequired -= MainFrmPanel.VerticalScroll.Visible ? SystemInformation.VerticalScrollBarWidth : 0;
+                MainFrmPanel.Padding = new Padding(TotalPaddingRequired, 0, 0, 0);
+
+            }
+        }
+
     }
 
     internal class RemStripBar : ToolStripSystemRenderer
     {
         protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e){}
     }
+
+    internal class FlickerFreePanel : FlowLayoutPanel
+    {
+        public FlickerFreePanel()
+        {
+            DoubleBuffered = true;
+        }
+    }
+
 }
