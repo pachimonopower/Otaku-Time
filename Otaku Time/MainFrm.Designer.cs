@@ -72,7 +72,6 @@
             this.optionStrip.Size = new System.Drawing.Size(1299, 31);
             this.optionStrip.TabIndex = 0;
             this.optionStrip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveThisform);
-            this.optionStrip.Resize += new System.EventHandler(this.optionStrip_Resize);
             // 
             // ProgramText
             // 
@@ -228,6 +227,9 @@
             // 
             this.LoginToMalBtn.ActiveLinkColor = System.Drawing.Color.White;
             this.LoginToMalBtn.ForeColor = System.Drawing.Color.White;
+            this.LoginToMalBtn.IsLink = true;
+            this.LoginToMalBtn.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.LoginToMalBtn.LinkColor = System.Drawing.Color.White;
             this.LoginToMalBtn.Name = "LoginToMalBtn";
             this.LoginToMalBtn.Size = new System.Drawing.Size(155, 28);
             this.LoginToMalBtn.Text = "Login To MyAnimeList";
@@ -243,6 +245,7 @@
             this.MainFrmPanel.Name = "MainFrmPanel";
             this.MainFrmPanel.Size = new System.Drawing.Size(1299, 547);
             this.MainFrmPanel.TabIndex = 2;
+            this.MainFrmPanel.SizeChanged += new System.EventHandler(this.MainFrmPanel_SizeChanged);
             // 
             // AboutInfo
             // 
@@ -350,6 +353,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainFrm";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Otaku Time";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrm_FormClosing);
             this.optionStrip.ResumeLayout(false);

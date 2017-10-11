@@ -14,7 +14,6 @@ namespace Otaku_Time
         {
             Color C = GetColor();
             Control.BackColor = C;
-
         }
 
         private static Color GetColor()

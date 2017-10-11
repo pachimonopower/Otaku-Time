@@ -26,7 +26,7 @@ namespace OtakuTimeTests
         }
 
         [TestMethod, TestCategory("AppVeyorDontRun")]
-        public async void GetRapidVideoLink()
+        public async System.Threading.Tasks.Task GetRapidVideoLink()
         {
             string rapidvideourl = await WebDriverClass.GetRapidVideoLink("https://www.rapidvideo.com/e/FF97ATLLGB");
             Assert.AreNotEqual("no", rapidvideourl);

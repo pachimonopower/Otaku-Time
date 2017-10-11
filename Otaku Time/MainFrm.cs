@@ -15,6 +15,9 @@ namespace Otaku_Time
     {
         private readonly DownloadingEpisodes _downloadingEpisodes;
 
+        private int OldLeft, OldTop = 0;
+        private Size OldSize;
+
         #region Win API Stuff
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
@@ -56,7 +59,7 @@ namespace Otaku_Time
             }
             else if (e.Clicks == 2)
             {
-                WindowState = WindowState == FormWindowState.Normal ? FormWindowState.Maximized : FormWindowState.Normal;
+                DoMaximizeMinimize();
             }
         }
         #endregion
@@ -89,12 +92,7 @@ namespace Otaku_Time
 
         private void MaximizeBtnClick(object sender, EventArgs e)
         {
-            if (WindowState == FormWindowState.Maximized)
-            {
-                WindowState = FormWindowState.Normal;
-                return;
-            }
-            WindowState = FormWindowState.Maximized;
+            DoMaximizeMinimize();
         }
 
         private void MinimizeBtnClick(object sender, EventArgs e)
@@ -107,6 +105,30 @@ namespace Otaku_Time
         public void LoadMainScreen()
         {
             BuildLayout(WebDriverClass.MainMobileUpdates ());
+        }
+
+        private void DoMaximizeMinimize()
+        {
+            if (OldLeft == 0 && OldTop == 0)
+            {
+                // set restore values
+                OldLeft = Left;
+                OldTop = Top;
+                OldSize = this.Size;
+
+                // Apply new values
+                Left = Top = 0;
+                this.Size = new Size(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+            }
+            else
+            {
+                Left = OldLeft;
+                Top = OldTop;
+                Size = OldSize;
+
+                OldLeft = OldTop = 0;
+                OldSize = Size.Empty;
+            }
         }
 
         private void BuildLayout(IEnumerable<AnimeInfoClass> animeList)
@@ -137,8 +159,8 @@ namespace Otaku_Time
                 alIst.Add(animeControl);
             }
             StaticsClass.InvokeIfRequired(MainFrmPanel, () => MainFrmPanel.Controls.AddRange(alIst.ToArray()));
-            StaticsClass.InvokeIfRequired(MainFrmPanel, SetFlowMargin);
             StaticsClass.InvokeIfRequired(MainFrmPanel, MainFrmPanel.ResumeLayout);
+            StaticsClass.InvokeIfRequired(MainFrmPanel, SetFlowMargin);
         }
 
         private static Image GetImage(string imageLocation)
@@ -180,12 +202,6 @@ namespace Otaku_Time
                 await LoadedAnime.GetAnimeId();
             }
             MainFrmPanel.SendToBack();
-        }
-
-        private void optionStrip_Resize(object sender, EventArgs e)
-        {
-            ProgramText.Margin = new Padding(optionStrip.Width / 2 - 40, 1, 0, 2);
-            SetFlowMargin();
         }
 
         private void ShowDownloads_Click(object sender, EventArgs e)
@@ -252,13 +268,18 @@ namespace Otaku_Time
             using (var ctrl = new AnimeControl())
             {
                 int TotalControlSize = ctrl.Width + ctrl.Padding.Vertical + ctrl.Margin.Vertical;
-                int TotalPaddingRequired = (MainFrmPanel.Width - (TotalControlSize * (int)Math.Floor((Decimal)MainFrmPanel.Width / TotalControlSize))) / 2;
-                TotalPaddingRequired -= MainFrmPanel.VerticalScroll.Visible ? SystemInformation.VerticalScrollBarWidth : 0;
+                int TotalPaddingRequired = (MainFrmPanel.Width - (TotalControlSize * (int)Math.Floor((Decimal)MainFrmPanel.Width  / TotalControlSize))) / 2;
+                TotalPaddingRequired -= MainFrmPanel.VerticalScroll.Visible ? SystemInformation.VerticalScrollBarWidth / 2 : 0;
                 MainFrmPanel.Padding = new Padding(TotalPaddingRequired, 0, 0, 0);
 
             }
         }
 
+        private void MainFrmPanel_SizeChanged(object sender, EventArgs e)
+        {
+            ProgramText.Margin = new Padding(optionStrip.Width / 2 - 40, 1, 0, 2);
+            SetFlowMargin();
+        }
     }
 
     internal class RemStripBar : ToolStripSystemRenderer

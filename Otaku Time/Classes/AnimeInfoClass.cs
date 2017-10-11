@@ -12,8 +12,5 @@ namespace Otaku_Time
         public string AnimeName = "";
         public string AnimeSeriesURL = "";
         public string AnimeSeriesSynopsis = "";
-
-
-
     }
 }
