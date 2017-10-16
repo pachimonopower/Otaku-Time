@@ -113,6 +113,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreYouHumanHelpFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AreYouHumanHelpFrm.Designer.cs">
+      <DependentUpon>AreYouHumanHelpFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Classes\DecoratorClass.cs" />
     <Compile Include="Classes\VariablesClass.cs" />
     <Compile Include="Classes\WebDriverClass.cs" />
@@ -197,6 +203,9 @@
       <DependentUpon>SplashFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\StaticsClass.cs" />
+    <EmbeddedResource Include="AreYouHumanHelpFrm.resx">
+      <DependentUpon>AreYouHumanHelpFrm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\AnimeControl.resx">
       <DependentUpon>AnimeControl.cs</DependentUpon>
     </EmbeddedResource>

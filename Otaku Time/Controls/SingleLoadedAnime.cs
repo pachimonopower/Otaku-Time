@@ -254,24 +254,39 @@ namespace Otaku_Time
             _infoFrm.BringToFront();
             DownloadBtn.Enabled = false;
             WatchNowBtn.Enabled = false;
-            await Task.Run((Action)DownloadAnime);
+            var token = new CancellationToken();
+            try
+            {
+                await Task.Run(() => DownloadAnime(token));
+            }
+            catch(OperationCanceledException)
+            {
+                //Messagebox disposed, stop doing this.
+            }
             DownloadBtn.Enabled = true;
             WatchNowBtn.Enabled = true;
             UseWaitCursor = false;
         }
 
-        private async void DownloadAnime()
+        private async void DownloadAnime(CancellationToken Token)
         {
             var vals = new Dictionary<string, string>();
             StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             foreach (var keyValPair in vals)
             {
                 var episodeName = GetSafeFilename(keyValPair.Key);
-                _infoFrm.Invoke((MethodInvoker)(() =>
+                try
                 {
-                    _infoFrm.textBox1.Text = "Downloading: " + episodeName;
-                    _infoFrm.textBox1.Refresh();
-                }));
+                    _infoFrm.Invoke((MethodInvoker)(() =>
+                    {
+                        _infoFrm.textBox1.Text = "Downloading: " + episodeName;
+                        _infoFrm.textBox1.Refresh();
+                    }));
+                }
+                catch(ObjectDisposedException)
+                {
+                    Token.ThrowIfCancellationRequested();
+                }
                 var episodeUrl = keyValPair.Value;
                 var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
                 Directory.CreateDirectory(directoryPath);
@@ -288,6 +303,11 @@ namespace Otaku_Time
                  
                 if (redirectorLink != "no")
                 {
+                    if(WebDriverClass.FileDoesNotExist(redirectorLink))
+                    {
+                        var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                        redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
+                    }
                     Invoke((MethodInvoker)(() => _de.addDownload(redirectorLink, episodeName, directoryPath)));
                 }
             }

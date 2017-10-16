@@ -50,7 +50,7 @@ namespace Otaku_Time
 
         private void Wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            if(e.Cancelled)
+            if(e.Cancelled || e.Error != null)
             {
                 File.Delete(fileName);
             }

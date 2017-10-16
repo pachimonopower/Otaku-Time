@@ -34,19 +34,21 @@
             // downloaditems
             // 
             this.downloaditems.AutoScroll = true;
-            this.downloaditems.BackColor = System.Drawing.SystemColors.Highlight;
+            this.downloaditems.BackColor = System.Drawing.SystemColors.MenuHighlight;
             this.downloaditems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.downloaditems.Location = new System.Drawing.Point(0, 0);
+            this.downloaditems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.downloaditems.Name = "downloaditems";
-            this.downloaditems.Size = new System.Drawing.Size(722, 420);
+            this.downloaditems.Size = new System.Drawing.Size(963, 517);
             this.downloaditems.TabIndex = 0;
             // 
             // DownloadingEpisodes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(722, 420);
+            this.ClientSize = new System.Drawing.Size(963, 517);
             this.Controls.Add(this.downloaditems);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DownloadingEpisodes";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web;
 using OpenQA.Selenium;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Otaku_Time
 {
@@ -31,7 +32,7 @@ namespace Otaku_Time
             }
         }
 
-        public static byte[] GetImageBytes (string imageUrl)
+        public static byte[] GetImageBytes(string imageUrl)
         {
             using (var wc = new CustomWebClient())
             {
@@ -50,16 +51,28 @@ namespace Otaku_Time
         /// <returns></returns>
         public static string RunViaDesktop(string animeUrl, string animeurlname, string name, string attributeName)
         {
-            var endpoint = $"http://{VariablesClass.KissLewdURL}/Hentai/{animeurlname}/{name.Replace(" ", "-")}?id={attributeName}";
+            var endpoint = $"http://{VariablesClass.MasterURL}{(VariablesClass.MasterURL == VariablesClass.KissLewdURL ? "/Hentai/" : "/Anime/")}{animeurlname}/{name.Replace(" ", "-")}?id={attributeName}&s=beta";
             var value = "";
             PhantomJSInstance.Navigate().GoToUrl(endpoint);
-            PhantomJSInstance.ExecuteScript("$('#selectServer').val('openload').change();");
-            Thread.Sleep(1000);
+            if (PhantomJSInstance.Title == "Are You Human") // Robot can't do this, YET! :P
+            {
+                AreYouHumanHelpFrm HelpFrm = new AreYouHumanHelpFrm(PhantomJSInstance);
+                HelpFrm.ShowDialog();
+            }
+            if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
+            {
+                PhantomJSInstance.ExecuteScript("$('#selectServer').val('openload').change();");
+                //PhantomJSInstance.ExecuteScript("$(\"#selectServer\").find(\"option[text=\"Beta Server\"]\").attr(\"selected\", true);");
+                Thread.Sleep(1000);
+            }
             var xo = PhantomJSInstance.FindElementsByTagName("a").FirstOrDefault(x => x.Text.Contains("CLICK HERE"));
             if (xo != null)
-                {
-                value = StaticsClass.GetOpenloadLink(xo.GetAttribute("href"));
-                }
+            {
+                if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
+                    value = StaticsClass.GetOpenloadLink(xo.GetAttribute("href"));
+                else
+                    value = xo.GetAttribute("href");
+            }
             PhantomJSInstance.Navigate().GoToUrl(animeUrl);
             return value;
         }
@@ -118,6 +131,21 @@ namespace Otaku_Time
                     AnimeThumbnailURL = x.FindElement(By.TagName("img")).GetAttribute("src"),
                     AnimeSeriesURL = x.GetAttribute("alink")
                 };
+            }
+        }
+
+        public static bool FileDoesNotExist(string redirectorLink)
+        {
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(redirectorLink) as HttpWebRequest;
+                request.Method = "HEAD";
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                return false;
+            }
+            catch (WebException)
+            {
+                return true;
             }
         }
     }
