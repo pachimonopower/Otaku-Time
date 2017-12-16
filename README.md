@@ -20,4 +20,4 @@ Otaku Time works by scraping HTML pages and running JavaScript in order to get t
 Nope. There will be problems that you may come across, but luckily for you PR's are welcome and submitting issues is also encouraged, if I don't know about bugs I cannot fix them.
 
 ## Thanks, I guess?
-No problem :)
+No problem, if you like what i've done please star so I know how many people are interested in this product :)
