@@ -136,16 +136,18 @@ namespace Otaku_Time
 
         public static bool FileDoesNotExist(string redirectorLink)
         {
+            if (redirectorLink == "") return true;
             try
             {
                 HttpWebRequest request = WebRequest.Create(redirectorLink) as HttpWebRequest;
                 request.Method = "HEAD";
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                response.Dispose();
                 return false;
             }
-            catch (WebException)
+            catch (WebException exc)
             {
-                return true;
+                return exc.Status != WebExceptionStatus.Timeout; //timeout usually means it might be active, untrusted test so return false
             }
         }
     }

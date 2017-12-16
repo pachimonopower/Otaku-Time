@@ -33,11 +33,12 @@
             this.AnimeImage = new System.Windows.Forms.PictureBox();
             this.AnimeName = new System.Windows.Forms.Label();
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
-            this.EpisodesFlowPanel = new FlickerFreePanel();
+            this.EpisodesFlowPanel = new Otaku_Time.FlickerFreePanel();
             this.DownloadBtn = new System.Windows.Forms.Button();
             this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.GetUrlsBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).BeginInit();
             this.AnimeEpisodes.SuspendLayout();
@@ -114,6 +115,7 @@
             this.AnimeEpisodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.AnimeEpisodes.Controls.Add(this.GetUrlsBtn);
             this.AnimeEpisodes.Controls.Add(this.EpisodesFlowPanel);
             this.AnimeEpisodes.Controls.Add(this.DownloadBtn);
             this.AnimeEpisodes.Controls.Add(this.WatchNowBtn);
@@ -143,28 +145,28 @@
             // 
             this.DownloadBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DownloadBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DownloadBtn.Location = new System.Drawing.Point(191, 451);
+            this.DownloadBtn.Location = new System.Drawing.Point(127, 450);
             this.DownloadBtn.Margin = new System.Windows.Forms.Padding(4);
             this.DownloadBtn.Name = "DownloadBtn";
-            this.DownloadBtn.Size = new System.Drawing.Size(168, 46);
+            this.DownloadBtn.Size = new System.Drawing.Size(109, 46);
             this.DownloadBtn.TabIndex = 1;
             this.DownloadBtn.Text = "Download";
             this.DownloadBtn.UseVisualStyleBackColor = true;
-            this.DownloadBtn.Click += new System.EventHandler(this.DownloadBtn_Click);
+            this.DownloadBtn.Click += new System.EventHandler(this.DownloadNow);
             // 
             // WatchNowBtn
             // 
             this.WatchNowBtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.WatchNowBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.WatchNowBtn.Location = new System.Drawing.Point(4, 451);
+            this.WatchNowBtn.Location = new System.Drawing.Point(9, 450);
             this.WatchNowBtn.Margin = new System.Windows.Forms.Padding(4);
             this.WatchNowBtn.Name = "WatchNowBtn";
-            this.WatchNowBtn.Size = new System.Drawing.Size(175, 46);
+            this.WatchNowBtn.Size = new System.Drawing.Size(109, 46);
             this.WatchNowBtn.TabIndex = 0;
             this.WatchNowBtn.Text = "Watch Now";
             this.WatchNowBtn.UseVisualStyleBackColor = true;
-            this.WatchNowBtn.Click += new System.EventHandler(this.WatchNowBtn_Click);
+            this.WatchNowBtn.Click += new System.EventHandler(this.WatchNow);
             // 
             // CloseBox
             // 
@@ -197,6 +199,19 @@
             this.splitContainer1.Size = new System.Drawing.Size(1299, 533);
             this.splitContainer1.SplitterDistance = 922;
             this.splitContainer1.TabIndex = 10;
+            // 
+            // GetUrlsBtn
+            // 
+            this.GetUrlsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.GetUrlsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetUrlsBtn.Location = new System.Drawing.Point(245, 449);
+            this.GetUrlsBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.GetUrlsBtn.Name = "GetUrlsBtn";
+            this.GetUrlsBtn.Size = new System.Drawing.Size(109, 46);
+            this.GetUrlsBtn.TabIndex = 3;
+            this.GetUrlsBtn.Text = "Get URLs";
+            this.GetUrlsBtn.UseVisualStyleBackColor = true;
+            this.GetUrlsBtn.Click += new System.EventHandler(this.GetDownloadUrlsClick);
             // 
             // SingleLoadedAnime
             // 
@@ -233,5 +248,6 @@
         private System.Windows.Forms.PictureBox CloseBox;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private FlickerFreePanel EpisodesFlowPanel;
+        private System.Windows.Forms.Button GetUrlsBtn;
     }
 }

@@ -19,8 +19,9 @@ namespace Otaku_Time
         private readonly DownloadingEpisodes _de;
         private string _path = "";
         private MyAnimeListAnimeInfoClass _AnimeObject;
-
-        private InfoFrm _infoFrm;
+        private bool _clicked;
+        private int _tryCount;
+        private InfoFrm _InfoFrm;
 
         public SingleLoadedAnime()
         {
@@ -37,7 +38,7 @@ namespace Otaku_Time
         {
             var width = EpisodesFlowPanel.Width;
             EpisodesFlowPanel.Controls.Clear();
-            AnimeSynopsis.Text =  CleanSynopsis(AnimeSynopsis.Text);
+            AnimeSynopsis.Text = CleanSynopsis(AnimeSynopsis.Text);
 
             _phantomObject.Navigate().GoToUrl(AnimeUrl);
             if (needSynopsis)
@@ -116,10 +117,10 @@ namespace Otaku_Time
             ((MainFrm)Parent).MainFrmPanel.BringToFront();
         }
 
-        private async void WatchNowBtn_Click(object sender, EventArgs e)
+        private async void WatchNow(object sender, EventArgs e)
         {
             var SelectedControls = EpisodesFlowPanel.Controls.Cast<EpisodeControl>().Where(x => x.Checked).ToArray();
-            if(SelectedControls.Count() == 0)
+            if (SelectedControls.Count() == 0)
             {
                 return;
             }
@@ -176,8 +177,6 @@ namespace Otaku_Time
             _pv.Show();
         }
 
-        private bool _clicked;
-        private int _tryCount;
         private async Task<string> GetGoogleLink(string attributeNumber)
         {
             _tryCount++;
@@ -229,17 +228,17 @@ namespace Otaku_Time
 
         public async Task GetAnimeId()
         {
-            if(StaticsClass.MyAnimeListObject != null)
+            if (StaticsClass.MyAnimeListObject != null)
             {
                 var AnimeEpisodes = await StaticsClass.MyAnimeListObject.SearchAnime(AnimeName.Text);
-                if(AnimeEpisodes.Count > 0)
+                if (AnimeEpisodes.Count > 0)
                 {
                     _AnimeObject = AnimeEpisodes.First(); //Should work fine due to text matching :D
                 }
             }
         }
 
-        private async void DownloadBtn_Click(object sender, EventArgs e)
+        private async void DownloadNow(object sender, EventArgs e)
         {
             var fbd = new FolderBrowserDialog();
             var result = fbd.ShowDialog();
@@ -249,81 +248,36 @@ namespace Otaku_Time
             }
             _path = fbd.SelectedPath;
             UseWaitCursor = true;
-            _infoFrm = new InfoFrm();
-            _infoFrm.Show();
-            _infoFrm.BringToFront();
             DownloadBtn.Enabled = false;
             WatchNowBtn.Enabled = false;
+            GetUrlsBtn.Enabled = false;
             var token = new CancellationToken();
             try
             {
-                await Task.Run(() => DownloadAnime(token));
+                await Task.Run(async () =>
+                {
+                    var vals = new Dictionary<string, string>();
+                    StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
+                    var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
+                    Directory.CreateDirectory(directoryPath);
+                    var Urls = await GetDownloadUrls(vals, "Downloading");
+                    foreach (var keyValPair in Urls)
+                    {
+                        var ActualUrl = keyValPair.Value;
+                        var EpisodeNum = keyValPair.Key;
+                        Invoke((MethodInvoker)(() => _de.addDownload(ActualUrl, EpisodeNum, directoryPath)));
+                    }
+                    StaticsClass.InvokeIfRequired(this, () => CloseBox.Enabled = true);
+                }, token);
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 //Messagebox disposed, stop doing this.
             }
             DownloadBtn.Enabled = true;
             WatchNowBtn.Enabled = true;
+            GetUrlsBtn.Enabled = true;
             UseWaitCursor = false;
-        }
-
-        private async void DownloadAnime(CancellationToken Token)
-        {
-            var vals = new Dictionary<string, string>();
-            StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
-            foreach (var keyValPair in vals)
-            {
-                var episodeName = GetSafeFilename(keyValPair.Key);
-                try
-                {
-                    _infoFrm.Invoke((MethodInvoker)(() =>
-                    {
-                        _infoFrm.textBox1.Text = "Downloading: " + episodeName;
-                        _infoFrm.textBox1.Refresh();
-                    }));
-                }
-                catch(ObjectDisposedException)
-                {
-                    Token.ThrowIfCancellationRequested();
-                }
-                var episodeUrl = keyValPair.Value;
-                var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
-                Directory.CreateDirectory(directoryPath);
-                string redirectorLink;
-                if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
-                {
-                    var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
-                    redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
-                }
-                else
-                {
-                    redirectorLink = (await GetGoogleLink(episodeUrl)).Replace("&amp;", "&");
-                }
-                 
-                if (redirectorLink != "no")
-                {
-                    if(WebDriverClass.FileDoesNotExist(redirectorLink))
-                    {
-                        var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
-                        redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
-                    }
-                    Invoke((MethodInvoker)(() => _de.addDownload(redirectorLink, episodeName, directoryPath)));
-                }
-            }
-            if (InvokeRequired)
-            {
-                Invoke((MethodInvoker)(() =>
-                {
-                    CloseBox.Enabled = true;
-                    _infoFrm.Close();
-                }));
-            }
-            else
-            {
-                CloseBox.Enabled = true;
-                _infoFrm.Close();
-            }
         }
 
         private static string GetSafeFilename(string filename)
@@ -336,5 +290,70 @@ namespace Otaku_Time
             DecoratorClass.GoThroughDecorate(this);
             AnimeSynopsis.BackColor = DownloadBtn.BackColor; //for some reason doesn't paint correctly.
         }
+
+        private async void GetDownloadUrlsClick(object sender, EventArgs e)
+        {
+            var vals = new Dictionary<string, string>();
+            StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
+            var urls = await Task.Run(() => GetDownloadUrls(vals, "Getting URL For"));
+            string CopyData = "";
+            foreach (KeyValuePair<string, string> keypairvalues in urls) CopyData += keypairvalues.Value + " - " + keypairvalues.Key + Environment.NewLine;
+            Clipboard.SetText(CopyData);
+            MessageBox.Show("The following has been copied to your clipboard: " + Environment.NewLine + CopyData, "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private async Task<Dictionary<string, string>> GetDownloadUrls(Dictionary<string, string> Values, string FetchMode = "")
+        {
+            if (_InfoFrm == null || _InfoFrm.IsDisposed) this.Invoke((MethodInvoker)(() => _InfoFrm = new InfoFrm())); //generate on main UI thread
+            var Dictionary = new Dictionary<string, string>();
+            StaticsClass.InvokeIfRequired(this, () =>
+            {
+                _InfoFrm.Show();
+                _InfoFrm.BringToFront();
+            });
+            foreach (var keyValPair in Values)
+            {
+                var episodeName = GetSafeFilename(keyValPair.Key);
+                try
+                {
+                    StaticsClass.InvokeIfRequired(this, () =>
+                    {
+                        _InfoFrm.textBox1.Text = $"{FetchMode}: " + episodeName;
+                        _InfoFrm.textBox1.Refresh();
+                    });
+                }
+                catch (ObjectDisposedException)
+                {
+                    StaticsClass.InvokeIfRequired(this, () => { _InfoFrm.Dispose(); _InfoFrm = null; });
+                    return Dictionary;
+                }
+                var episodeUrl = keyValPair.Value;
+                var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
+                Directory.CreateDirectory(directoryPath);
+
+                string redirectorLink;
+                if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
+                {
+                    var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                    redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
+                }
+                else
+                {
+                    redirectorLink = (await GetGoogleLink(episodeUrl)).Replace("&amp;", "&");
+                }
+                if (redirectorLink != "no")
+                {
+                    if (WebDriverClass.FileDoesNotExist(redirectorLink))
+                    {
+                        var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
+                        redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
+                    }
+                    Dictionary.Add(AnimeName.Text + " - " + episodeName, redirectorLink);
+                }
+            }
+            StaticsClass.InvokeIfRequired(this, () => { _InfoFrm.Dispose(); _InfoFrm = null; });
+            return Dictionary;
+        }
+
     }
 }

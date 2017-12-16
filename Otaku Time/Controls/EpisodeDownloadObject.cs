@@ -54,7 +54,7 @@ namespace Otaku_Time
             {
                 File.Delete(fileName);
             }
-            ((DownloadingEpisodes)ParentForm).CheckForNextDownload();
+            ((DownloadingEpisodes)this.FindForm()).CheckForNextDownload();
             wc.Dispose();
             this.Dispose();
         }
