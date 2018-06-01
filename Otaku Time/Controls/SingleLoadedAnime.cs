@@ -319,14 +319,15 @@ namespace Otaku_Time
 
         private async void GetDownloadUrlsClick(object sender, EventArgs e)
         {
-            var sfd = new SaveFileDialog() { FileName = AnimeName.Text + ".txt", Filter = "Text File|*.txt;", RestoreDirectory = true, InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) };
+            var availableAnimeName = string.Concat(AnimeName.Text.Where(c => !Path.GetInvalidFileNameChars().Contains(c))); // sanitize animename for using file name
+            var sfd = new SaveFileDialog() { FileName = availableAnimeName + ".txt", Filter = "Text File|*.txt;", RestoreDirectory = true, InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) };
             if (sfd.ShowDialog() != DialogResult.OK) return;
             var vals = new Dictionary<string, string>();
             StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             var urls = await Task.Run(() => GetDownloadUrls(vals, "Getting URL For"));
             using (var sw = new StreamWriter(sfd.FileName, false, new System.Text.UTF8Encoding(false)))
             {
-                foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + keypairvalues.Key);
+                foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + availableAnimeName);
             }
             MessageBox.Show("Complete got urls." + Environment.NewLine + string.Format("location = \"{0}\"", sfd.FileName), "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
