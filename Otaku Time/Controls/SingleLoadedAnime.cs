@@ -327,7 +327,7 @@ namespace Otaku_Time
             var urls = await Task.Run(() => GetDownloadUrls(vals, "Getting URL For"));
             using (var sw = new StreamWriter(sfd.FileName, false, new System.Text.UTF8Encoding(false)))
             {
-                foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + availableAnimeName);
+                foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + keypairvalues.Key);
             }
             StaticsClass.InvokeIfRequired(this, () => CloseBox.Enabled = true);
             MessageBox.Show("Complete got urls." + Environment.NewLine + string.Format("location = \"{0}\"", sfd.FileName), "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Information);
