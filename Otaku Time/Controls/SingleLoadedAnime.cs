@@ -306,9 +306,9 @@ namespace Otaku_Time
             UseWaitCursor = false;
         }
 
-        private static string GetSafeFilename(string filename)
+        private static string GetSafeFilename(string filename, string replaceChar = "_")
         {
-            return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
+            return string.Join(replaceChar, filename.Split(Path.GetInvalidFileNameChars()));
         }
 
         private void SingleLoadedAnime_Load(object sender, EventArgs e)
@@ -319,7 +319,7 @@ namespace Otaku_Time
 
         private async void GetDownloadUrlsClick(object sender, EventArgs e)
         {
-            var availableAnimeName = string.Concat(AnimeName.Text.Where(c => !Path.GetInvalidFileNameChars().Contains(c))); // sanitize animename for using file name
+            var availableAnimeName = GetSafeFilename(AnimeName.Text);
             var sfd = new SaveFileDialog() { FileName = availableAnimeName + ".txt", Filter = "Text File|*.txt;", RestoreDirectory = true, InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) };
             if (sfd.ShowDialog() != DialogResult.OK) return;
             var vals = new Dictionary<string, string>();
