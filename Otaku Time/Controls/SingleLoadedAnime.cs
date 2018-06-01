@@ -298,7 +298,7 @@ namespace Otaku_Time
             var vals = new Dictionary<string, string>();
             StaticsClass.InvokeIfRequired(EpisodesFlowPanel, (() => { EpisodesFlowPanel.Controls.Cast<EpisodeControl>().ToList().Where(x => x.Checked).ToList().ForEach(x => vals.Add(x.Text, x.Tag.ToString())); CloseBox.Enabled = false; }));
             var urls = await Task.Run(() => GetDownloadUrls(vals, "Getting URL For"));
-            using (var sw = new StreamWriter(sfd.FileName, false, System.Text.Encoding.GetEncoding("utf-8")))
+            using (var sw = new StreamWriter(sfd.FileName, false, new System.Text.UTF8Encoding(false)))
             {
                 foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + keypairvalues.Key);
             }
