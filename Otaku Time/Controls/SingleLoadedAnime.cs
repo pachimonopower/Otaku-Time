@@ -359,7 +359,8 @@ namespace Otaku_Time
                     return Dictionary;
                 }
                 var episodeUrl = keyValPair.Value;
-                var directoryPath = _path + @"\" + GetSafeFilename(AnimeName.Text);
+                var safeAnimeName = GetSafeFilename(AnimeName.Text);
+                var directoryPath = _path + @"\" + safeAnimeName;
                 Directory.CreateDirectory(directoryPath);
 
                 string redirectorLink;
@@ -379,7 +380,7 @@ namespace Otaku_Time
                         var animeurlname = _phantomObject.Url.Substring(_phantomObject.Url.LastIndexOf("/", StringComparison.Ordinal) + 1);
                         redirectorLink = WebDriverClass.RunViaDesktop(AnimeUrl, animeurlname, episodeName, episodeUrl);
                     }
-                    Dictionary.Add(AnimeName.Text + " - " + episodeName, redirectorLink);
+                    Dictionary.Add(safeAnimeName + " - " + episodeName, redirectorLink);
                 }
             }
             StaticsClass.InvokeIfRequired(this, () => { _InfoFrm.Dispose(); _InfoFrm = null; });
