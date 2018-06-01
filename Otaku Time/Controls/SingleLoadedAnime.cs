@@ -329,6 +329,7 @@ namespace Otaku_Time
             {
                 foreach (KeyValuePair<string, string> keypairvalues in urls) sw.WriteLine(keypairvalues.Value + " - " + availableAnimeName);
             }
+            StaticsClass.InvokeIfRequired(this, () => CloseBox.Enabled = true);
             MessageBox.Show("Complete got urls." + Environment.NewLine + string.Format("location = \"{0}\"", sfd.FileName), "Otaku Time", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
