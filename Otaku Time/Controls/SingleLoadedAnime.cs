@@ -64,6 +64,32 @@ namespace Otaku_Time
                 EpisodesFlowPanel.Controls.Add(epcontrol);
                 EpisodesFlowPanel.Controls.SetChildIndex(epcontrol, 0);
             }
+
+            foreach (EpisodeControl item in EpisodesFlowPanel.Controls)
+            {
+                item.CheckChanged += new EventHandler((sender, e) => {
+                    AllCheck.CheckedChanged -= AllCheck_CheckedChanged;
+                    var checkCount = 0;
+                    foreach (EpisodeControl checkItem in EpisodesFlowPanel.Controls)
+                    {
+                        if (checkItem.Checked) checkCount++;
+                    }
+                    if (checkCount == 0)
+                    {
+                        AllCheck.CheckState = CheckState.Unchecked;
+                    }
+                    else if (checkCount == EpisodesFlowPanel.Controls.Count)
+                    {
+                        AllCheck.CheckState = CheckState.Checked;
+                    }
+                    else
+                    {
+                        AllCheck.CheckState = CheckState.Indeterminate;
+                    }
+                    AllCheck.CheckedChanged += AllCheck_CheckedChanged;
+                });
+            }
+
             BringToFront();
         }
 
@@ -358,5 +384,11 @@ namespace Otaku_Time
             return Dictionary;
         }
 
+        private void AllCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            var allCheck = (CheckBox)sender;
+            var check = allCheck.Checked;
+            foreach (EpisodeControl item in EpisodesFlowPanel.Controls) item.Checked = check;
+        }
     }
 }

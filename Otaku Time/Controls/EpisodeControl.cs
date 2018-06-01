@@ -14,6 +14,7 @@ namespace Otaku_Time
     {
         public delegate void UpdateMyAnimeList(MyAnimeListWrapper.MyAnimeListAnimeValuesClass Values);
         public event UpdateMyAnimeList UpdateMal;
+        public event EventHandler CheckChanged;
 
         public bool Checked
         {
@@ -26,10 +27,10 @@ namespace Otaku_Time
             set => EpisodeNameChk.Text = value;
         }
 
-
         public EpisodeControl()
         {
             InitializeComponent();
+            EpisodeNameChk.CheckedChanged += new EventHandler((sender, e) => { CheckChanged?.Invoke(this, e); });
         }
     }
 }

@@ -33,12 +33,13 @@
             this.AnimeImage = new System.Windows.Forms.PictureBox();
             this.AnimeName = new System.Windows.Forms.Label();
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
-            this.EpisodesFlowPanel = new Otaku_Time.FlickerFreePanel();
+            this.GetUrlsBtn = new System.Windows.Forms.Button();
             this.DownloadBtn = new System.Windows.Forms.Button();
             this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.GetUrlsBtn = new System.Windows.Forms.Button();
+            this.AllCheck = new System.Windows.Forms.CheckBox();
+            this.EpisodesFlowPanel = new Otaku_Time.FlickerFreePanel();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).BeginInit();
             this.AnimeEpisodes.SuspendLayout();
@@ -106,7 +107,7 @@
             this.AnimeName.Location = new System.Drawing.Point(304, 44);
             this.AnimeName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AnimeName.Name = "AnimeName";
-            this.AnimeName.Size = new System.Drawing.Size(79, 30);
+            this.AnimeName.Size = new System.Drawing.Size(64, 24);
             this.AnimeName.TabIndex = 4;
             this.AnimeName.Text = "label1";
             // 
@@ -115,6 +116,7 @@
             this.AnimeEpisodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.AnimeEpisodes.Controls.Add(this.AllCheck);
             this.AnimeEpisodes.Controls.Add(this.GetUrlsBtn);
             this.AnimeEpisodes.Controls.Add(this.EpisodesFlowPanel);
             this.AnimeEpisodes.Controls.Add(this.DownloadBtn);
@@ -130,16 +132,18 @@
             this.AnimeEpisodes.TabStop = false;
             this.AnimeEpisodes.Text = "Episodes";
             // 
-            // EpisodesFlowPanel
+            // GetUrlsBtn
             // 
-            this.EpisodesFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EpisodesFlowPanel.AutoScroll = true;
-            this.EpisodesFlowPanel.Location = new System.Drawing.Point(4, 33);
-            this.EpisodesFlowPanel.Name = "EpisodesFlowPanel";
-            this.EpisodesFlowPanel.Size = new System.Drawing.Size(355, 411);
-            this.EpisodesFlowPanel.TabIndex = 2;
+            this.GetUrlsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.GetUrlsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetUrlsBtn.Location = new System.Drawing.Point(245, 449);
+            this.GetUrlsBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.GetUrlsBtn.Name = "GetUrlsBtn";
+            this.GetUrlsBtn.Size = new System.Drawing.Size(109, 46);
+            this.GetUrlsBtn.TabIndex = 3;
+            this.GetUrlsBtn.Text = "Get URLs";
+            this.GetUrlsBtn.UseVisualStyleBackColor = true;
+            this.GetUrlsBtn.Click += new System.EventHandler(this.GetDownloadUrlsClick);
             // 
             // DownloadBtn
             // 
@@ -200,18 +204,27 @@
             this.splitContainer1.SplitterDistance = 922;
             this.splitContainer1.TabIndex = 10;
             // 
-            // GetUrlsBtn
+            // AllCheck
             // 
-            this.GetUrlsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.GetUrlsBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GetUrlsBtn.Location = new System.Drawing.Point(245, 449);
-            this.GetUrlsBtn.Margin = new System.Windows.Forms.Padding(4);
-            this.GetUrlsBtn.Name = "GetUrlsBtn";
-            this.GetUrlsBtn.Size = new System.Drawing.Size(109, 46);
-            this.GetUrlsBtn.TabIndex = 3;
-            this.GetUrlsBtn.Text = "Get URLs";
-            this.GetUrlsBtn.UseVisualStyleBackColor = true;
-            this.GetUrlsBtn.Click += new System.EventHandler(this.GetDownloadUrlsClick);
+            this.AllCheck.AutoSize = true;
+            this.AllCheck.Location = new System.Drawing.Point(9, 21);
+            this.AllCheck.Name = "AllCheck";
+            this.AllCheck.Size = new System.Drawing.Size(79, 21);
+            this.AllCheck.TabIndex = 4;
+            this.AllCheck.Text = "All check";
+            this.AllCheck.UseVisualStyleBackColor = true;
+            this.AllCheck.CheckedChanged += new System.EventHandler(this.AllCheck_CheckedChanged);
+            // 
+            // EpisodesFlowPanel
+            // 
+            this.EpisodesFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.EpisodesFlowPanel.AutoScroll = true;
+            this.EpisodesFlowPanel.Location = new System.Drawing.Point(4, 44);
+            this.EpisodesFlowPanel.Name = "EpisodesFlowPanel";
+            this.EpisodesFlowPanel.Size = new System.Drawing.Size(355, 400);
+            this.EpisodesFlowPanel.TabIndex = 2;
             // 
             // SingleLoadedAnime
             // 
@@ -227,6 +240,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).EndInit();
             this.AnimeEpisodes.ResumeLayout(false);
+            this.AnimeEpisodes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CloseBox)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -249,5 +263,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private FlickerFreePanel EpisodesFlowPanel;
         private System.Windows.Forms.Button GetUrlsBtn;
+        private System.Windows.Forms.CheckBox AllCheck;
     }
 }
