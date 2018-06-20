@@ -374,9 +374,6 @@ namespace Otaku_Time
                 }
                 var episodeUrl = keyValPair.Value;
                 var safeAnimeName = GetSafeFilename(AnimeName.Text);
-                var directoryPath = _path + @"\" + safeAnimeName;
-                Directory.CreateDirectory(directoryPath);
-
                 string redirectorLink;
                 if (VariablesClass.MasterURL == VariablesClass.KissLewdURL)
                 {
