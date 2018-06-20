@@ -225,12 +225,19 @@ namespace Otaku_Time
             if (!string.IsNullOrWhiteSpace(alternativeSourceUrl))
             {
                 string value;
-                if (alternativeSourceUrl.Contains("openload"))
-                    value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
-                else if (alternativeSourceUrl.Contains("rapidvideo"))
-                    value = await WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                if (GetRawURL.Checked)
+                {
+                    value = alternativeSourceUrl;
+                }
                 else
-                    value = alternativeSourceUrl; // its the google link. weird.
+                {
+                    if (alternativeSourceUrl.Contains("openload"))
+                        value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
+                    else if (alternativeSourceUrl.Contains("rapidvideo"))
+                        value = await WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                    else
+                        value = alternativeSourceUrl; // its the google link. weird.
+                }
                 _phantomObject.Navigate().GoToUrl(AnimeUrl);
                 _clicked = false;
                 return value;

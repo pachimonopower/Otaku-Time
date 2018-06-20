@@ -33,13 +33,14 @@
             this.AnimeImage = new System.Windows.Forms.PictureBox();
             this.AnimeName = new System.Windows.Forms.Label();
             this.AnimeEpisodes = new System.Windows.Forms.GroupBox();
+            this.AllCheck = new System.Windows.Forms.CheckBox();
             this.GetUrlsBtn = new System.Windows.Forms.Button();
+            this.EpisodesFlowPanel = new Otaku_Time.FlickerFreePanel();
             this.DownloadBtn = new System.Windows.Forms.Button();
             this.WatchNowBtn = new System.Windows.Forms.Button();
             this.CloseBox = new System.Windows.Forms.PictureBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.AllCheck = new System.Windows.Forms.CheckBox();
-            this.EpisodesFlowPanel = new Otaku_Time.FlickerFreePanel();
+            this.GetRawURL = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AnimeImage)).BeginInit();
             this.AnimeEpisodes.SuspendLayout();
@@ -116,6 +117,7 @@
             this.AnimeEpisodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.AnimeEpisodes.Controls.Add(this.GetRawURL);
             this.AnimeEpisodes.Controls.Add(this.AllCheck);
             this.AnimeEpisodes.Controls.Add(this.GetUrlsBtn);
             this.AnimeEpisodes.Controls.Add(this.EpisodesFlowPanel);
@@ -132,6 +134,17 @@
             this.AnimeEpisodes.TabStop = false;
             this.AnimeEpisodes.Text = "Episodes";
             // 
+            // AllCheck
+            // 
+            this.AllCheck.AutoSize = true;
+            this.AllCheck.Location = new System.Drawing.Point(9, 21);
+            this.AllCheck.Name = "AllCheck";
+            this.AllCheck.Size = new System.Drawing.Size(79, 21);
+            this.AllCheck.TabIndex = 4;
+            this.AllCheck.Text = "All check";
+            this.AllCheck.UseVisualStyleBackColor = true;
+            this.AllCheck.CheckedChanged += new System.EventHandler(this.AllCheck_CheckedChanged);
+            // 
             // GetUrlsBtn
             // 
             this.GetUrlsBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -144,6 +157,17 @@
             this.GetUrlsBtn.Text = "Get URLs";
             this.GetUrlsBtn.UseVisualStyleBackColor = true;
             this.GetUrlsBtn.Click += new System.EventHandler(this.GetDownloadUrlsClick);
+            // 
+            // EpisodesFlowPanel
+            // 
+            this.EpisodesFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.EpisodesFlowPanel.AutoScroll = true;
+            this.EpisodesFlowPanel.Location = new System.Drawing.Point(4, 44);
+            this.EpisodesFlowPanel.Name = "EpisodesFlowPanel";
+            this.EpisodesFlowPanel.Size = new System.Drawing.Size(355, 400);
+            this.EpisodesFlowPanel.TabIndex = 2;
             // 
             // DownloadBtn
             // 
@@ -204,27 +228,16 @@
             this.splitContainer1.SplitterDistance = 922;
             this.splitContainer1.TabIndex = 10;
             // 
-            // AllCheck
+            // GetRawURL
             // 
-            this.AllCheck.AutoSize = true;
-            this.AllCheck.Location = new System.Drawing.Point(9, 21);
-            this.AllCheck.Name = "AllCheck";
-            this.AllCheck.Size = new System.Drawing.Size(79, 21);
-            this.AllCheck.TabIndex = 4;
-            this.AllCheck.Text = "All check";
-            this.AllCheck.UseVisualStyleBackColor = true;
-            this.AllCheck.CheckedChanged += new System.EventHandler(this.AllCheck_CheckedChanged);
-            // 
-            // EpisodesFlowPanel
-            // 
-            this.EpisodesFlowPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.EpisodesFlowPanel.AutoScroll = true;
-            this.EpisodesFlowPanel.Location = new System.Drawing.Point(4, 44);
-            this.EpisodesFlowPanel.Name = "EpisodesFlowPanel";
-            this.EpisodesFlowPanel.Size = new System.Drawing.Size(355, 400);
-            this.EpisodesFlowPanel.TabIndex = 2;
+            this.GetRawURL.AutoSize = true;
+            this.GetRawURL.Location = new System.Drawing.Point(192, 21);
+            this.GetRawURL.Name = "GetRawURL";
+            this.GetRawURL.Size = new System.Drawing.Size(99, 21);
+            this.GetRawURL.TabIndex = 4;
+            this.GetRawURL.Text = "GetRawURL";
+            this.GetRawURL.UseVisualStyleBackColor = true;
+            this.GetRawURL.CheckedChanged += new System.EventHandler(this.AllCheck_CheckedChanged);
             // 
             // SingleLoadedAnime
             // 
@@ -264,5 +277,6 @@
         private FlickerFreePanel EpisodesFlowPanel;
         private System.Windows.Forms.Button GetUrlsBtn;
         private System.Windows.Forms.CheckBox AllCheck;
+        private System.Windows.Forms.CheckBox GetRawURL;
     }
 }
