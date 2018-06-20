@@ -208,6 +208,18 @@ namespace Otaku_Time
             _tryCount++;
             if (_clicked == false)
             {
+                while (true)
+                {
+                    try
+                    {
+                        _phantomObject.Navigate().Refresh();
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                }
                 _phantomObject.Navigate().Refresh();
                 var runTheScript = _phantomObject.FindElementsByClassName("episode").First(x => x.GetAttribute("data-value") == attributeNumber);
                 runTheScript.Click();
@@ -229,25 +241,32 @@ namespace Otaku_Time
                     Thread.Sleep(1000);
                 }
             }
-            if (!string.IsNullOrWhiteSpace(alternativeSourceUrl))
+            try
             {
-                string value;
-                if (GetRawURL.Checked)
+                if (!string.IsNullOrWhiteSpace(alternativeSourceUrl))
                 {
-                    value = alternativeSourceUrl;
-                }
-                else
-                {
-                    if (alternativeSourceUrl.Contains("openload"))
-                        value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
-                    else if (alternativeSourceUrl.Contains("rapidvideo"))
-                        value = await WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                    string value;
+                    if (GetRawURL.Checked)
+                    {
+                        value = alternativeSourceUrl;
+                    }
                     else
-                        value = alternativeSourceUrl; // its the google link. weird.
+                    {
+                        if (alternativeSourceUrl.Contains("openload"))
+                            value = StaticsClass.GetOpenloadLink(alternativeSourceUrl);
+                        else if (alternativeSourceUrl.Contains("rapidvideo"))
+                            value = await WebDriverClass.GetRapidVideoLink(alternativeSourceUrl);
+                        else
+                            value = alternativeSourceUrl; // its the google link. weird.
+                    }
+                    _phantomObject.Navigate().GoToUrl(AnimeUrl);
+                    _clicked = false;
+                    return value;
                 }
-                _phantomObject.Navigate().GoToUrl(AnimeUrl);
-                _clicked = false;
-                return value;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             if (val == null)
             {
@@ -386,7 +405,15 @@ namespace Otaku_Time
                 }
                 else
                 {
-                    redirectorLink = (await GetGoogleLink(episodeUrl)).Replace("&amp;", "&");
+                    redirectorLink = "";
+                    try
+                    {
+                        redirectorLink = (await GetGoogleLink(episodeUrl)).Replace("&amp;", "&");
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
                 if (redirectorLink != "no")
                 {
