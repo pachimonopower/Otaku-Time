@@ -217,11 +217,18 @@ namespace Otaku_Time
             var secondspreval = firstpreval.Where(x => x.Text != "").Select(x => x).ToList();
             var val = secondspreval.FirstOrDefault(x => x.Text.Contains("mp4"));
             var alternativeSourceUrl = "";
-            try
+            for (var i = 0; i < 100; i++)
             {
-                alternativeSourceUrl = _phantomObject.FindElementById("mVideo").GetAttribute("src");
+                if (!string.IsNullOrWhiteSpace(alternativeSourceUrl)) break;
+                try
+                {
+                    alternativeSourceUrl = _phantomObject.FindElementById("mVideo").GetAttribute("src");
+                }
+                catch (Exception)
+                {
+                    Thread.Sleep(1000);
+                }
             }
-            catch (Exception) { }
             if (!string.IsNullOrWhiteSpace(alternativeSourceUrl))
             {
                 string value;
