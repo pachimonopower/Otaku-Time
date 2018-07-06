@@ -40,6 +40,10 @@ namespace Otaku_Time
             EpisodesFlowPanel.Controls.Clear();
             AnimeSynopsis.Text = CleanSynopsis(AnimeSynopsis.Text);
 
+            var splitData = AnimeUrl.Split('/');
+            splitData[splitData.Length - 1] = System.Web.HttpUtility.UrlEncode(splitData.Last(), System.Text.Encoding.UTF8);
+            AnimeUrl = string.Join("/", splitData);
+
             _phantomObject.Navigate().GoToUrl(AnimeUrl);
             if (needSynopsis)
             {
